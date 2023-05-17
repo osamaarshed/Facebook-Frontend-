@@ -1,0 +1,18 @@
+.friends-card {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
