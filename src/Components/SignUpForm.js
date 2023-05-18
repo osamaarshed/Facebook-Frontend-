@@ -1,6 +1,7 @@
 import React from "react";
 // import { useState } from "react";
 import { Button, Form, Input } from "antd";
+
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../Css/SignUpForm.css";
@@ -30,7 +31,7 @@ const SignUpForm = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        alert(err.response.data.message);
       });
   };
   const onFinishFailed = (errorInfo) => {

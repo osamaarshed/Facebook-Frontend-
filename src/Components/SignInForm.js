@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../Css/SignInForm.css";
@@ -15,8 +15,6 @@ const SignInForm = () => {
       email: values.email,
       password: values.password,
     };
-    //   console.log(payload);
-    // console.log("Success:", values);
 
     await axios
       .post("http://localhost:8080/signin/", payload)
@@ -25,11 +23,14 @@ const SignInForm = () => {
         console.log(res.data);
         if (res.data.message === "Login Successful") {
           localStorage.setItem("jwt", res.data.jwt);
+          message.success("Login Successful");
           navigate("/allposts");
         }
       })
       .catch((err) => {
-        console.log(err);
+        message.error(err.response.data.message);
+        // alert(err.response.data.message);
+        // console.log(err);
       });
   };
   const onFinishFailed = (errorInfo) => {

@@ -6,30 +6,29 @@ import { Col, Row } from "antd";
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
-  // const [handleError, setHandleError] = useState();
-  useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    const getPosts = async () => {
-      try {
-        const posts = await axios({
-          method: "get",
-          url: "http://localhost:8080/posts/all",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        // console.log(posts.data.post);
-        // console.log(posts.data);
-        setPosts(posts.data);
-      } catch (error) {
-        // console.log(error);
-        if (error.response && error.response.status === 404) {
-          console.log("Not Found");
-        } else {
-          console.error(error.message);
-        }
+  const token = localStorage.getItem("jwt");
+  const getPosts = async () => {
+    try {
+      const posts = await axios({
+        method: "get",
+        url: "http://localhost:8080/posts/all",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setPosts(posts.data);
+      console.log(posts.data);
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        console.log("Not Found");
+      } else {
+        console.error(error.message);
       }
-    };
-    getPosts();
-  }, []);
+    }
+  };
+  useEffect(() => {
+    if (token) {
+      getPosts();
+    }
+  }, [token]);
   return (
     <>
       <Navbar />

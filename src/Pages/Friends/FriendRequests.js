@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import axios from "axios";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
-import { Card, Button, Space } from "antd";
+import { Card, Button, Space, message } from "antd";
 
 const FriendRequests = () => {
   const token = localStorage.getItem("jwt");
@@ -35,9 +35,11 @@ const FriendRequests = () => {
         headers: { Authorization: `Bearer ${token}` },
         data: payload,
       });
+      message.success("Friend Request " + status + "ed");
       console.log(friendRequest);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      message.error(err.response.data.message);
+      console.log(err.response.data.message);
     }
   };
   return (
@@ -67,7 +69,14 @@ const FriendRequests = () => {
                   >
                     Accept
                   </Button>
-                  <Button type="primary" danger icon={<CloseOutlined />}>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      handleRequest("reject", object._id);
+                    }}
+                    danger
+                    icon={<CloseOutlined />}
+                  >
                     Reject
                   </Button>
                 </Space>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import "../../Css/CreatePosts.css";
 import axios from "axios";
 import Navbar from "../../Components/Navbar";
@@ -22,21 +22,24 @@ const tailLayout = {
 const CreatePosts = () => {
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     const payload = {
       postDescription: values.postDescription,
     };
     const token = localStorage.getItem("jwt");
-    axios({
+    await axios({
       method: "post",
       url: "http://localhost:8080/posts/",
       data: payload,
       headers: { Authorization: `Bearer ${token}` },
     }).then((res) => {
       if (res.data.message === "Created Successfully") {
-        alert("Created Successfully");
+        message.success("Created Successfully");
+        // alert("Created Successfully");
+        form.resetFields();
       } else {
-        alert("Something Broke");
+        message.error("Something Broke");
+        // alert("Something Broke");
       }
       console.log(res.data);
     });
