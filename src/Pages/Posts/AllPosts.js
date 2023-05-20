@@ -6,6 +6,7 @@ import { Col, Row } from "antd";
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
+  const [render, setStateRender] = useState(false);
   const token = localStorage.getItem("jwt");
   const getPosts = async () => {
     try {
@@ -20,7 +21,7 @@ const AllPosts = () => {
       if (error.response && error.response.status === 404) {
         console.log("Not Found");
       } else {
-        console.error(error.message);
+        console.error(error.response.data.message);
       }
     }
   };
@@ -28,21 +29,29 @@ const AllPosts = () => {
     if (token) {
       getPosts();
     }
-  }, [token]);
+  }, [token, render]);
   return (
     <>
       <Navbar />
-      <div>
+      <div
+        style={{
+          backgroundColor: "#f0f0f0",
+        }}
+      >
         {posts?.map((object, i) => {
           return (
             <Row key={i}>
               <Col span={12} offset={6}>
                 <PostCard
+                  inputFile={object.inputFile}
+                  render={render}
+                  setStateRender={(e) => setStateRender(e)}
                   postId={object._id}
                   likeCount={object.likesCount}
                   cardDescription={object.postDescription}
                   cardTitle={object.userId.name}
                 />
+                {/* {console.log(object.userId.name)} */}
               </Col>
             </Row>
           );

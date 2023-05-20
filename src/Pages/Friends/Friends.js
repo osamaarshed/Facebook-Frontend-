@@ -20,29 +20,34 @@ const Friends = () => {
   // const [isClicked, setisClicked] = useState(false);
   const [sentRequest, setSentRequest] = useState(false);
   const [isFriend, setIsFriend] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
+  // const [check, setCheck] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    const showFriends = async () => {
-      try {
-        const friends = await axios({
-          method: "GET",
-          url: "http://localhost:8080/addfriends/",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        // console.log(friends.data.message);
-        setFriendResponse(friends.data.message);
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          console.log("Not Found");
-        } else {
-          console.error(error.message);
-        }
-      }
-    };
     showFriends();
-  }, []);
+  }, [isDeleted]);
+  // useEffect(() => {
+  //   onSearch();
+  // }, []);
 
+  // const token = localStorage.getItem("jwt");
+  const showFriends = async () => {
+    try {
+      const friends = await axios({
+        method: "GET",
+        url: "http://localhost:8080/addfriends/",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      // console.log(friends.data.message);
+      setFriendResponse(friends.data.message);
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        console.log("Not Found");
+      } else {
+        console.error(error.message);
+      }
+    }
+  };
   const onSearch = async (value) => {
     await axios({
       method: "get",
@@ -50,15 +55,16 @@ const Friends = () => {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
-        if (res.data[0].friendRequests.includes(decodedToken._id)) {
+        if (res.data[0]?.friendRequests.includes(decodedToken._id)) {
           setSentRequest(true);
-        } else if (res.data[0].friends.includes(decodedToken._id)) {
+        } else if (res.data[0]?.friends.includes(decodedToken._id)) {
           setIsFriend(true);
         } else {
           setSentRequest(false);
           setIsFriend(false);
         }
         setResponse(res.data);
+
         console.log(res.data);
       })
       .catch((err) => {
@@ -67,7 +73,7 @@ const Friends = () => {
     // console.log(value);
   };
 
-  const handleFriendRequest = async (friendId) => {
+  const handleSendRequest = async (friendId) => {
     const payload = {
       friendId: friendId,
     };
@@ -94,6 +100,7 @@ const Friends = () => {
     })
       .then((res) => {
         message.success(res.data.message);
+        setIsDeleted(true);
         // alert(res.data.message);
         console.log(res.data);
       })
@@ -140,7 +147,7 @@ const Friends = () => {
                         type="primary"
                         icon={<UserAddOutlined />}
                         onClick={() => {
-                          handleFriendRequest(object._id);
+                          handleSendRequest(object._id);
                         }}
                       >
                         Add Friend
@@ -156,7 +163,8 @@ const Friends = () => {
                       <Button
                         type="primary"
                         onClick={() => {
-                          handleFriendRequest(object._id);
+                          handleSendRequest(object._id);
+                          setSentRequest(true);
                         }}
                       >
                         <UserAddOutlined />

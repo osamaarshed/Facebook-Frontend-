@@ -8,8 +8,11 @@ const FriendRequests = () => {
   const token = localStorage.getItem("jwt");
   const [response, setResponse] = useState();
   useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    axios({
+    fetchFriendRequests();
+  }, [response]);
+
+  const fetchFriendRequests = async () => {
+    await axios({
       method: "GET",
       url: "http://localhost:8080/addfriends/requests",
       headers: { Authorization: `Bearer ${token}` },
@@ -21,7 +24,7 @@ const FriendRequests = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
 
   const handleRequest = async (status, friendId) => {
     const payload = {
@@ -47,7 +50,6 @@ const FriendRequests = () => {
       <Navbar />
       <h1>FriendRequests</h1>
       <div>
-        {/* {console.log(response)} */}
         {response?.map((object) => {
           return (
             <>
@@ -57,6 +59,7 @@ const FriendRequests = () => {
                 style={{
                   width: 300,
                   backgroundColor: "#d9d9d9",
+                  marginLeft: "20%",
                 }}
               >
                 <Space>

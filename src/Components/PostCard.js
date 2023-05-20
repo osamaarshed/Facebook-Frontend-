@@ -22,6 +22,7 @@ const PostCard = (props) => {
   const [commentRender, setCommentRender] = useState(false);
   // const [isTrue, setIsTrue] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  // const imagePath = "/public/images/" + props.inputFile;
   // const [commentRender, setCommentRender] = useState(false);
 
   const token = localStorage.getItem("jwt");
@@ -92,6 +93,7 @@ const PostCard = (props) => {
   };
 
   const handleLike = async () => {
+    props?.setStateRender(!props?.render);
     if (isClicked === false) {
       const payload = {
         postId: props.postId,
@@ -105,6 +107,7 @@ const PostCard = (props) => {
       })
         .then((res) => {
           setIsClicked(!isClicked);
+
           message.success("Liked");
           console.log(res.data);
         })
@@ -143,7 +146,6 @@ const PostCard = (props) => {
       .then((res) => {
         message.success(res.data.message);
         props?.setStateRender(!props?.render);
-        // alert(res.data.message);
         console.log(res.data);
       })
       .catch((err) => {
@@ -166,10 +168,12 @@ const PostCard = (props) => {
       .then((res) => {
         form.resetFields();
         message.success("Updated");
+        props?.setStateRender(!props?.render);
         console.log(res.data);
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        message.error(err.response.data.message)
+        // alert(err.response.data.message);
       });
   };
 
@@ -286,15 +290,30 @@ const PostCard = (props) => {
         cover={
           <img
             alt="example"
-            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            src={`http://localhost:8080/public/images/${props.inputFile}`}
+            style={{
+              objectFit: "cover",
+              width: 600,
+              height: 400,
+            }}
           />
         }
         actions={[
           <span key="like">
             {isClicked ? (
-              <LikeTwoTone id={props.postId} onClick={handleLike} />
+              <LikeTwoTone
+                id={props.postId}
+                onClick={() => {
+                  handleLike();
+                }}
+              />
             ) : (
-              <LikeOutlined id={props.postId} onClick={handleLike} />
+              <LikeOutlined
+                id={props.postId}
+                onClick={() => {
+                  handleLike();
+                }}
+              />
             )}
 
             {/* <LikeOutlined id={props.postId} onClick={handleLike} /> */}

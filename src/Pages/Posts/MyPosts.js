@@ -17,6 +17,7 @@ const MyPosts = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       // console.log(posts.data.post);
+      console.log(posts.data.post);
       setPosts(posts.data.post);
     } catch (error) {
       // console.log(error);
@@ -35,12 +36,17 @@ const MyPosts = () => {
   return (
     <>
       <Navbar />
-      <div>
+      <div
+        style={{
+          backgroundColor: "#f0f0f0",
+        }}
+      >
         {posts?.map((object, i) => {
           return (
             <Row key={i}>
               <Col span={12} offset={6}>
                 <PostCard
+                  inputFile={object.inputFile}
                   render={render}
                   setStateRender={(e) => setStateRender(e)}
                   postId={object._id}
