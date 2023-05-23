@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "antd";
 import Navbar from "../../Components/Navbar";
-import axios from "axios";
 import {
   UserAddOutlined,
   DeleteOutlined,
@@ -10,6 +9,12 @@ import {
 import { Card, Button, Space, message } from "antd";
 import "../../Css/Friends.css";
 import jwt_decode from "jwt-decode";
+import {
+  fetchFriends,
+  findFriends,
+  sendRequest,
+  deleteFriend,
+} from "../../Api";
 const { Search } = Input;
 
 const Friends = () => {
@@ -17,96 +22,59 @@ const Friends = () => {
   const decodedToken = jwt_decode(token);
   const [response, setResponse] = useState();
   const [friendResponse, setFriendResponse] = useState();
-  // const [isClicked, setisClicked] = useState(false);
   const [sentRequest, setSentRequest] = useState(false);
   const [isFriend, setIsFriend] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
-  // const [check, setCheck] = useState(false);
 
   useEffect(() => {
     showFriends();
   }, [isDeleted]);
-  // useEffect(() => {
-  //   onSearch();
-  // }, []);
 
-  // const token = localStorage.getItem("jwt");
   const showFriends = async () => {
-    try {
-      const friends = await axios({
-        method: "GET",
-        url: "http://localhost:8080/addfriends/",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      // console.log(friends.data.message);
-      setFriendResponse(friends.data.message);
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        console.log("Not Found");
-      } else {
-        console.error(error.message);
-      }
-    }
+    const res = await fetchFriends();
+    // console.log(res);
+    setFriendResponse(res.data.message);
   };
   const onSearch = async (value) => {
-    await axios({
-      method: "get",
-      url: `http://localhost:8080/addfriends/${value}`,
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (res.data[0]?.friendRequests.includes(decodedToken._id)) {
-          setSentRequest(true);
-        } else if (res.data[0]?.friends.includes(decodedToken._id)) {
-          setIsFriend(true);
-        } else {
-          setSentRequest(false);
-          setIsFriend(false);
-        }
-        setResponse(res.data);
-
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // console.log(value);
+    try {
+      const res = await findFriends(value);
+      if (res.data[0]?.friendRequests.includes(decodedToken._id)) {
+        setSentRequest(true);
+      } else if (res.data[0]?.friends.includes(decodedToken._id)) {
+        setIsFriend(true);
+      } else {
+        setSentRequest(false);
+        setIsFriend(false);
+      }
+      setResponse(res.data);
+      console.log(res.data);
+    } catch (error) {
+      message.error(error.response.data.message);
+    }
   };
-
   const handleSendRequest = async (friendId) => {
     const payload = {
       friendId: friendId,
     };
-
     try {
-      const friendRequest = await axios({
-        method: "post",
-        url: "http://localhost:8080/addfriends",
-        headers: { Authorization: `Bearer ${token}` },
-        data: payload,
-      });
-      // setisClicked(!isClicked);
+      const res = await sendRequest(payload);
       message.success("Request Sent");
-      console.log(friendRequest.data.message);
+      console.log(res.data.message);
     } catch (error) {
-      console.log(error);
+      message.error(error.response.data.message);
+      console.log(error.response.data.message);
     }
   };
   const handleDeleteFriend = async (friendId) => {
-    await axios({
-      method: "delete",
-      url: `http://localhost:8080/addfriends/${friendId}`,
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        message.success(res.data.message);
-        setIsDeleted(true);
-        // alert(res.data.message);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err.response.data.message);
-      });
+    try {
+      const res = await deleteFriend(friendId);
+      message.success(res.data.message);
+      setIsDeleted(true);
+      console.log(res.data);
+    } catch (error) {
+      message.error(error.response.data.message);
+      console.log(error.response.data.message);
+    }
   };
   return (
     <div>
@@ -132,27 +100,6 @@ const Friends = () => {
                   }}
                 >
                   <Space>
-                    {/* {!isClicked ? (
-                      <Button
-                        type="primary"
-                        icon={<UserAddOutlined />}
-                        // onClick={() => {
-                        //   handleDeleteFriend(object._id);
-                        // }}
-                      >
-                        Already Friend
-                      </Button>
-                    ) : (
-                      <Button
-                        type="primary"
-                        icon={<UserAddOutlined />}
-                        onClick={() => {
-                          handleSendRequest(object._id);
-                        }}
-                      >
-                        Add Friend
-                      </Button>
-                    )} */}
                     {sentRequest ? (
                       <Button type="primary">Already Sent</Button>
                     ) : isFriend ? (

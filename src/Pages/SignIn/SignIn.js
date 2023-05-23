@@ -2,13 +2,9 @@ import React from "react";
 import { Button, Form, Input, message } from "antd";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "../Css/SignInForm.css";
+import "../../Css/SignInForm.css";
 
-// const [form, setForm] = useState({
-
-// })
-
-const SignInForm = () => {
+const SignIn = () => {
   const navigate = useNavigate();
   const onFinish = async (values) => {
     const payload = {
@@ -17,9 +13,8 @@ const SignInForm = () => {
     };
 
     await axios
-      .post("http://localhost:8080/signin/", payload)
+      .post(`${process.env.REACT_APP_API}signin/`, payload)
       .then((res) => {
-        // localStorage.setItem("jwt", res.data.jwt);
         console.log(res.data);
         if (res.data.message === "Login Successful") {
           localStorage.setItem("jwt", res.data.jwt);
@@ -29,8 +24,6 @@ const SignInForm = () => {
       })
       .catch((err) => {
         message.error(err.response.data.message);
-        // alert(err.response.data.message);
-        // console.log(err);
       });
   };
   const onFinishFailed = (errorInfo) => {
@@ -48,9 +41,6 @@ const SignInForm = () => {
         }}
         style={{
           maxWidth: 600,
-          // alignItems: "center",
-          // textAlign: "center",
-          // justifyContent: "center",
         }}
         initialValues={{
           remember: true,
@@ -105,4 +95,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignIn;

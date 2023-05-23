@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Avatar, Card, Input, Space, Form } from "antd";
 import { Modal, message, Col, Row } from "antd";
+import Buttons from "./Buttons";
 import {
   CommentOutlined,
   ShareAltOutlined,
@@ -7,11 +9,16 @@ import {
   LikeTwoTone,
   DeleteOutlined,
   EditOutlined,
-  // DislikeOutlined,
-  // DislikeTwoTone,
 } from "@ant-design/icons";
-import axios from "axios";
-import { Avatar, Card, Input, Button, Space, Form } from "antd";
+import {
+  showComments,
+  handleCommentSubmit,
+  handleCommentDelete,
+  likePost,
+  handleDelete,
+  handleUpdate,
+} from "../Api";
+
 const { Meta } = Card;
 
 const PostCard = (props) => {
@@ -20,12 +27,7 @@ const PostCard = (props) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [commentData, setCommentData] = useState([]);
   const [commentRender, setCommentRender] = useState(false);
-  // const [isTrue, setIsTrue] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  // const imagePath = "/public/images/" + props.inputFile;
-  // const [commentRender, setCommentRender] = useState(false);
-
-  const token = localStorage.getItem("jwt");
 
   const handleOk = () => {
     setIsModalOpen(false);
@@ -35,63 +37,11 @@ const PostCard = (props) => {
     setIsModalOpen(false);
     setIsEditModalOpen(false);
   };
-
-  const showComments = async () => {
-    // setIsModalOpen(true);
-    try {
-      const res = await axios({
-        method: "get",
-        url: `http://localhost:8080/comments/${props.postId}`,
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      // props?.setStateRender(!props?.render);
-      console.log(res.data);
-      setCommentData(res.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleCommentSubmitFinish = async (values) => {
+    await handleCommentSubmit(props.postId, values);
+    setCommentRender(!commentRender);
+    form.resetFields();
   };
-
-  const handleCommentSubmit = async (values) => {
-    const payload = {
-      comment: values.comment,
-      postId: props.postId,
-    };
-    await axios({
-      method: "post",
-      url: "http://localhost:8080/comments/",
-      headers: { Authorization: `Bearer ${token}` },
-      data: payload,
-    })
-      .then((res) => {
-        form.resetFields();
-        setCommentRender(!commentRender);
-        // setCommentRender(!commentRender);
-        message.success("Comment Posted");
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleCommentDelete = async (postId) => {
-    // console.log(postId._id);
-    await axios({
-      method: "delete",
-      url: `http://localhost:8080/comments/${postId._id}`,
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        setCommentRender(!commentRender);
-        message.success(res.data.message);
-        console.log(res.data.message);
-      })
-      .catch((err) => {
-        message.error(err.response.data.message);
-      });
-  };
-
   const handleLike = async () => {
     props?.setStateRender(!props?.render);
     if (isClicked === false) {
@@ -99,86 +49,43 @@ const PostCard = (props) => {
         postId: props.postId,
         like: "true",
       };
-      await axios({
-        method: "post",
-        url: "http://localhost:8080/posts/like",
-        headers: { Authorization: `Bearer ${token}` },
-        data: payload,
-      })
-        .then((res) => {
-          setIsClicked(!isClicked);
-
-          message.success("Liked");
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      try {
+        const res = await likePost(payload);
+        setIsClicked(!isClicked);
+        message.success("Liked");
+        console.log(res.data);
+      } catch (error) {
+        message.error(error.response.data.message);
+        console.log(error.response.data.message);
+      }
     } else {
       const payload = {
         postId: props.postId,
         like: "false",
       };
-      await axios({
-        method: "post",
-        url: "http://localhost:8080/posts/like",
-        headers: { Authorization: `Bearer ${token}` },
-        data: payload,
-      })
-        .then((res) => {
-          setIsClicked(!isClicked);
-          message.success("Disliked");
-          console.log(res.data);
-        })
-        .catch((err) => {
-          // alert(err.response.data.message);
-          console.log(err.response.data.message);
-        });
+      try {
+        const res = await likePost(payload);
+        setIsClicked(!isClicked);
+        message.success("Disliked");
+        console.log(res.data);
+      } catch (error) {
+        message.error(error.response.data.message);
+        console.log(error.response.data.message);
+      }
     }
   };
-
-  const handleDelete = async () => {
-    await axios({
-      method: "delete",
-      url: `http://localhost:8080/posts/${props.postId}`,
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        message.success(res.data.message);
-        props?.setStateRender(!props?.render);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        message.error(err.response.data.message);
-        // alert(err.response.data.message);
-      });
+  const handleUpdateValues = async (value) => {
+    await handleUpdate(props.postId, value);
+    form.resetFields();
+    props?.setStateRender(!props?.render);
   };
-
-  const handleUpdate = async (value) => {
-    const payload = {
-      postId: props.postId,
-      postDescription: value.postDescription,
-    };
-    await axios({
-      method: "put",
-      url: "http://localhost:8080/posts/",
-      headers: { Authorization: `Bearer ${token}` },
-      data: payload,
-    })
-      .then((res) => {
-        form.resetFields();
-        message.success("Updated");
-        props?.setStateRender(!props?.render);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        message.error(err.response.data.message)
-        // alert(err.response.data.message);
-      });
+  const getCommentsData = async () => {
+    const res = await showComments(props.postId);
+    setCommentData(res);
   };
 
   useEffect(() => {
-    showComments();
+    getCommentsData();
   }, [commentRender]);
 
   return (
@@ -189,38 +96,36 @@ const PostCard = (props) => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        {commentData?.map((object) => {
+        {commentData?.map((object, i) => {
           return (
             <>
-              <Row>
+              <Row key={i}>
                 <Col span={12}>
                   <b> {object.userId.name} :</b> " {object.comment} "
                 </Col>
                 <Col span={4} offset={6}>
-                  <Button
+                  <Buttons
+                    title={<DeleteOutlined />}
                     onClick={() => {
-                      handleCommentDelete(object.postId);
+                      const res = handleCommentDelete(object.postId);
+                      if (res) {
+                        setCommentRender(!commentRender);
+                      }
                     }}
-                  >
-                    <DeleteOutlined />
-                  </Button>
+                  />
                 </Col>
               </Row>
-              {/* <span>
-                <b> {object.userId.name} :</b> " {object.comment} " <br />
-              </span> */}
             </>
           );
         })}
         <Space.Compact
           style={{
             width: "100%",
-            // marginLeft: "10%",
           }}
         >
           <Form
             name="control-hooks"
-            onFinish={handleCommentSubmit}
+            onFinish={handleCommentSubmitFinish}
             form={form}
             style={{
               maxWidth: 600,
@@ -237,9 +142,7 @@ const PostCard = (props) => {
               <Input placeholder="Add Comment" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
+              <Buttons type="primary" htmlType="submit" title="Submit" />
             </Form.Item>
           </Form>
         </Space.Compact>
@@ -258,7 +161,7 @@ const PostCard = (props) => {
         >
           <Form
             name="control-hooks"
-            onFinish={handleUpdate}
+            onFinish={handleUpdateValues}
             form={form}
             style={{
               maxWidth: 600,
@@ -275,9 +178,7 @@ const PostCard = (props) => {
               <Input placeholder="Post Description" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
+              <Buttons type="primary" htmlType="submit" title="Submit" />
             </Form.Item>
           </Form>
         </Space.Compact>
@@ -290,7 +191,7 @@ const PostCard = (props) => {
         cover={
           <img
             alt="example"
-            src={`http://localhost:8080/public/images/${props.inputFile}`}
+            src={`${process.env.REACT_APP_API}public/images/${props.inputFile}`}
             style={{
               objectFit: "cover",
               width: 600,
@@ -299,9 +200,10 @@ const PostCard = (props) => {
           />
         }
         actions={[
-          <span key="like">
+          <span>
             {isClicked ? (
               <LikeTwoTone
+                key="likes"
                 id={props.postId}
                 onClick={() => {
                   handleLike();
@@ -309,6 +211,7 @@ const PostCard = (props) => {
               />
             ) : (
               <LikeOutlined
+                key="unlike"
                 id={props.postId}
                 onClick={() => {
                   handleLike();
@@ -316,25 +219,23 @@ const PostCard = (props) => {
               />
             )}
 
-            {/* <LikeOutlined id={props.postId} onClick={handleLike} /> */}
             {props.likeCount}
           </span>,
-          // <span key="dislike">
-          //   <DislikeOutlined id={props.postId} onClick={handleLike} />
-          // </span>,
           <CommentOutlined
             key="comment"
             id={props.postId}
             onClick={() => {
               setIsModalOpen(true);
-              showComments();
+              getCommentsData();
             }}
           />,
           <ShareAltOutlined key="share" />,
+
           <DeleteOutlined
             key="delete"
             onClick={() => {
-              handleDelete();
+              handleDelete(props.postId);
+              props?.setStateRender(!props?.render);
             }}
           />,
           <EditOutlined

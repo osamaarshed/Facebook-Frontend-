@@ -1,33 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar";
-import axios from "axios";
+// import axios from "axios";
 import PostCard from "../../Components/PostCard";
 import { Col, Row } from "antd";
+import { getAllPosts } from "../../Api";
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
   const [render, setStateRender] = useState(false);
   const token = localStorage.getItem("jwt");
-  const getPosts = async () => {
-    try {
-      const posts = await axios({
-        method: "get",
-        url: "http://localhost:8080/posts/all",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setPosts(posts.data);
-      console.log(posts.data);
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        console.log("Not Found");
-      } else {
-        console.error(error.response.data.message);
-      }
-    }
+
+  const showAllPosts = async () => {
+    const res = await getAllPosts();
+    setPosts(res);
   };
   useEffect(() => {
     if (token) {
-      getPosts();
+      showAllPosts();
     }
   }, [token, render]);
   return (
@@ -51,7 +40,6 @@ const AllPosts = () => {
                   cardDescription={object.postDescription}
                   cardTitle={object.userId.name}
                 />
-                {/* {console.log(object.userId.name)} */}
               </Col>
             </Row>
           );

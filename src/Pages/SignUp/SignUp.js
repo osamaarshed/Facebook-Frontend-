@@ -1,16 +1,11 @@
 import React from "react";
-// import { useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "../Css/SignUpForm.css";
+import "../../Css/SignUpForm.css";
 
-// const [form, setForm] = useState({
-
-// })
-
-const SignUpForm = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const onFinish = async (values) => {
     const payload = {
@@ -19,19 +14,18 @@ const SignUpForm = () => {
       password: values.password,
       confirmpassword: values.confirmpassword,
     };
-    //   console.log(payload);
-    // console.log("Success:", values);
 
     await axios
-      .post("http://localhost:8080/signup/", payload)
+      .post(`${process.env.REACT_APP_API}signup/`, payload)
       .then((res) => {
         console.log(res);
         if (res.data.message === "Created Successfully") {
+          message.success("User Created Successfully");
           navigate("/signin");
         }
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        message.error(err.response.data.message);
       });
   };
   const onFinishFailed = (errorInfo) => {
@@ -128,4 +122,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default SignUp;

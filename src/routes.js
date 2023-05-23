@@ -1,7 +1,9 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Home from "./Pages/Home";
-import SignInForm from "./Components/SignInForm";
+// import SignInForm from "./Components/SignInForm";
+import SignIn from "./Pages/SignIn/SignIn";
+// import SignUp from "./Pages/SignUp/SignUp";
 import MyPosts from "./Pages/Posts/MyPosts";
 import CreatePosts from "./Pages/Posts/CreatePosts";
 import Friends from "./Pages/Friends/Friends";
@@ -15,7 +17,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/signin",
-    element: <SignInForm />,
+    element: <SignIn />,
   },
   {
     path: "/allposts",

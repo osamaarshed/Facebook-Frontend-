@@ -1,56 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar";
-import axios from "axios";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
-import { Card, Button, Space, message } from "antd";
+import { Card, Button, Space } from "antd";
+import { fetchFriendRequests, handleRequest } from "../../Api";
 
 const FriendRequests = () => {
-  const token = localStorage.getItem("jwt");
-  const [response, setResponse] = useState();
+  const [friendRequest, setfriendRequest] = useState([]);
+  const [requestStatus, setRequestStatus] = useState();
   useEffect(() => {
-    fetchFriendRequests();
-  }, [response]);
+    showFriendRequests();
+  }, [requestStatus]);
 
-  const fetchFriendRequests = async () => {
-    await axios({
-      method: "GET",
-      url: "http://localhost:8080/addfriends/requests",
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        // console.log(res.data);
-        setResponse(res.data.requests);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleRequest = async (status, friendId) => {
-    const payload = {
-      status: status,
-      friendId: friendId,
-    };
-    try {
-      const friendRequest = await axios({
-        method: "post",
-        url: "http://localhost:8080/addfriends/status",
-        headers: { Authorization: `Bearer ${token}` },
-        data: payload,
-      });
-      message.success("Friend Request " + status + "ed");
-      console.log(friendRequest);
-    } catch (err) {
-      message.error(err.response.data.message);
-      console.log(err.response.data.message);
-    }
+  const showFriendRequests = async () => {
+    const res = await fetchFriendRequests();
+    setfriendRequest(res);
+    console.log("hello", res);
   };
   return (
     <div>
       <Navbar />
       <h1>FriendRequests</h1>
       <div>
-        {response?.map((object) => {
+        {friendRequest?.map((object) => {
           return (
             <>
               <Card
@@ -65,8 +36,9 @@ const FriendRequests = () => {
                 <Space>
                   <Button
                     type="primary"
-                    onClick={() => {
-                      handleRequest("accept", object._id);
+                    onClick={async () => {
+                      const res = await handleRequest("accept", object._id);
+                      setRequestStatus(res);
                     }}
                     icon={<CheckOutlined />}
                   >
@@ -74,8 +46,9 @@ const FriendRequests = () => {
                   </Button>
                   <Button
                     type="primary"
-                    onClick={() => {
-                      handleRequest("reject", object._id);
+                    onClick={async () => {
+                      const res = await handleRequest("reject", object._id);
+                      setRequestStatus(res);
                     }}
                     danger
                     icon={<CloseOutlined />}

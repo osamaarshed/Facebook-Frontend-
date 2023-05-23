@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Menu } from "antd";
-import { LogoutOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "../Css/Navbar.css";
-import SigninForm from "../Components/SignInForm";
+import SignIn from "./../Pages/SignIn/SignIn";
+import { navItems } from "../constants";
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const [openKeys, setOpenKeys] = useState([]);
   const jwt = localStorage.getItem("jwt");
-  const handleLogOut = () => {
-    localStorage.clear();
-    navigate("/signin");
+
+  useEffect(() => {
+    console.log("Render");
+  }, []);
+
+  const handleSubMenuHover = (key) => {
+    setOpenKeys([key]);
   };
   return (
     <>
@@ -31,6 +34,8 @@ const Navbar = () => {
             </Link>
             <div className="demo-logo" />
             <Menu
+              openKeys={openKeys}
+              onOpenChange={setOpenKeys}
               theme="dark"
               style={{
                 width: "100%",
@@ -38,52 +43,32 @@ const Navbar = () => {
               mode="horizontal"
             >
               <div className="Navbar-SubMenu">
-                <SubMenu key="postsSubMenu" title="Posts">
-                  <Menu.Item key="Alltheposts">
+                <SubMenu
+                  key="sub1"
+                  title="Posts"
+                  onMouseHover={() => handleSubMenuHover("sub1")}
+                >
+                  <Menu.Item key="1">
                     <Link to="/allposts">All Posts</Link>
                   </Menu.Item>
-                  <Menu.Item key="posts">
+                  <Menu.Item key="2">
                     <Link to="/myposts">My Posts</Link>
                   </Menu.Item>
                 </SubMenu>
               </div>
-              <div>
-                <Menu.Item key="createPost">
-                  <Link to="/createposts">Create Post</Link>
-                </Menu.Item>
-              </div>
-              <div>
-                <SubMenu key="friendsSubMenu" title="Friends">
-                  <Menu.Item key="friends">
-                    <Link to="/friends">Friends</Link>
+              {navItems?.map((object) => {
+                return (
+                  <Menu.Item key={object.key} onClick={object.onclick}>
+                    <Link to={object.linkTo}>{object.name}</Link>
                   </Menu.Item>
-                  <Menu.Item key="friendRequests">
-                    <Link to="/friends/requests">Friend Request</Link>
-                  </Menu.Item>
-                </SubMenu>
-              </div>
-
-              <Menu.Item
-                key="logout"
-                icon={<LogoutOutlined />}
-                onClick={handleLogOut}
-              >
-                Logout
-              </Menu.Item>
+                );
+              })}
             </Menu>
           </Header>
-
-          {/* <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          Ant Design ©2023 Created by Ant UED
-        </Footer> */}
         </Layout>
       ) : (
         <>
-          <SigninForm />
+          <SignIn />
         </>
       )}
     </>
