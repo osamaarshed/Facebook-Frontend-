@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar";
+// import Navbar from "../../Components/Navbar";
 import PostCard from "../../Components/PostCard";
 import { getPosts } from "../../Api";
 import { Col, Row } from "antd";
@@ -20,7 +20,7 @@ const MyPosts = () => {
   }, [token, render]);
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div
         style={{
           backgroundColor: "#f0f0f0",

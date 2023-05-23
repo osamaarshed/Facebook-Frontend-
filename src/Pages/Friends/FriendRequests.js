@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar";
+// import Navbar from "../../Components/Navbar";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { Card, Button, Space } from "antd";
 import { fetchFriendRequests, handleRequest } from "../../Api";
@@ -18,7 +18,7 @@ const FriendRequests = () => {
   };
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <h1>FriendRequests</h1>
       <div>
         {friendRequest?.map((object) => {

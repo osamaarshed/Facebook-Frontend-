@@ -1,5 +1,11 @@
+/* .navbar-header {
+  display: "flex";
+  align-items: "center";
+} */
+
 .App {
   text-align: center;
+  /* color: pink; */
 }
 
 .App-logo {

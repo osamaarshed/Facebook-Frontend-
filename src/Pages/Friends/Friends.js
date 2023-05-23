@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "antd";
-import Navbar from "../../Components/Navbar";
+// import Navbar from "../../Components/Navbar";
 import {
   UserAddOutlined,
   DeleteOutlined,
@@ -31,9 +31,12 @@ const Friends = () => {
   }, [isDeleted]);
 
   const showFriends = async () => {
-    const res = await fetchFriends();
-    // console.log(res);
-    setFriendResponse(res.data.message);
+    try {
+      const res = await fetchFriends();
+      setFriendResponse(res);
+    } catch (error) {
+      message.error(error.response.data.message);
+    }
   };
   const onSearch = async (value) => {
     try {
@@ -78,7 +81,7 @@ const Friends = () => {
   };
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <h1>Friends</h1>
       <Search
         style={{ width: "80%" }}

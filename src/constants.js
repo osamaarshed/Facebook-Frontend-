@@ -1,3 +1,9 @@
+import FriendRequests from "./Pages/Friends/FriendRequests";
+import Friends from "./Pages/Friends/Friends";
+import AllPosts from "./Pages/Posts/AllPosts";
+import CreatePosts from "./Pages/Posts/CreatePosts";
+import MyPosts from "./Pages/Posts/MyPosts";
+
 export const navItems = [
   //   {
   //     name: "Posts",
@@ -18,25 +24,29 @@ export const navItems = [
   //   },
   {
     name: "Create Posts",
-    key: "createPosts",
-    linkTo: "/createposts",
+    key: "createposts",
   },
   {
     name: "Friends",
     key: "friends",
-    linkTo: "/friends",
   },
   {
     name: "Friend Requests",
     key: "friendRequest",
-    linkTo: "/friends/requests",
   },
   {
     name: "Logout",
     key: "logout",
-    linkTo: "/signin",
     onclick: function () {
       localStorage.clear();
     },
   },
 ];
+
+export const contentRoutes = {
+  allposts: <AllPosts />,
+  myposts: <MyPosts />,
+  createposts: <CreatePosts />,
+  friends: <Friends />,
+  friendRequests: <FriendRequests />,
+};

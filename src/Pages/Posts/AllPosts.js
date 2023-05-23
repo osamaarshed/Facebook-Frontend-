@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar";
+// import Navbar from "../../Components/Navbar";
 // import axios from "axios";
 import PostCard from "../../Components/PostCard";
 import { Col, Row } from "antd";
@@ -9,6 +9,10 @@ const AllPosts = () => {
   const [posts, setPosts] = useState([]);
   const [render, setStateRender] = useState(false);
   const token = localStorage.getItem("jwt");
+
+  // const renderNavbar = useCallback(() => {
+  //   return <Navbar />;
+  // }, []);
 
   const showAllPosts = async () => {
     const res = await getAllPosts();
@@ -21,7 +25,8 @@ const AllPosts = () => {
   }, [token, render]);
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
+      {/* {renderNavbar()} */}
       <div
         style={{
           backgroundColor: "#f0f0f0",

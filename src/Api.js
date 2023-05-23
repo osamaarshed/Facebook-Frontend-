@@ -251,11 +251,13 @@ export const fetchFriends = async () => {
       url: `${process.env.REACT_APP_API}addfriends/`,
       headers: { Authorization: `Bearer ${token}` },
     });
-    return friends;
+    // console.log(friends);
+    return friends.data.message;
     // setFriendResponse(friends.data.message);
   } catch (error) {
     if (error.response && error.response.status === 404) {
-      console.log("Not Found");
+      message.info("No Friends");
+      // console.log("Not Found");
     } else {
       message.error(error.response.data.message);
     }
