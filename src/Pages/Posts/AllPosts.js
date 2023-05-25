@@ -1,55 +1,67 @@
-import React, { useEffect, useState } from "react";
-// import Navbar from "../../Components/Navbar";
-// import axios from "axios";
+import React, { useEffect } from "react";
 import PostCard from "../../Components/PostCard";
 import { Col, Row } from "antd";
-import { getAllPosts } from "../../Api";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { fetchAllPostsData } from "../../ReduxToolkit/store/PostSlices/AllPostsSlice";
+import { Spin } from "antd";
 
 const AllPosts = () => {
-  const [posts, setPosts] = useState([]);
-  const [render, setStateRender] = useState(false);
+  // const [render, setStateRender] = useState(false);
   const token = localStorage.getItem("jwt");
+  const dispatch = useDispatch();
 
-  // const renderNavbar = useCallback(() => {
-  //   return <Navbar />;
-  // }, []);
-
-  const showAllPosts = async () => {
-    const res = await getAllPosts();
-    setPosts(res);
+  const showAllPosts = () => {
+    dispatch(fetchAllPostsData());
   };
+
+  const data = useSelector((state) => {
+    return state.post;
+  });
+
+  const renderData = useSelector((state) => {
+    return state.render;
+  });
+
   useEffect(() => {
     if (token) {
       showAllPosts();
     }
-  }, [token, render]);
+  }, [token, renderData]);
   return (
     <>
-      {/* <Navbar /> */}
-      {/* {renderNavbar()} */}
-      <div
-        style={{
-          backgroundColor: "#f0f0f0",
-        }}
-      >
-        {posts?.map((object, i) => {
-          return (
-            <Row key={i}>
-              <Col span={12} offset={6}>
-                <PostCard
-                  inputFile={object.inputFile}
-                  render={render}
-                  setStateRender={(e) => setStateRender(e)}
-                  postId={object._id}
-                  likeCount={object.likesCount}
-                  cardDescription={object.postDescription}
-                  cardTitle={object.userId.name}
-                />
-              </Col>
-            </Row>
-          );
-        })}
-      </div>
+      {/* <Spin className="spinner" /> */}
+      {data?.isLoading ? (
+        <>
+          <Spin className="spinner" />
+        </>
+      ) : (
+        <>
+          <div
+            style={{
+              backgroundColor: "#f0f0f0",
+            }}
+          >
+            {data?.value?.map((object, i) => {
+              return (
+                <Row key={i}>
+                  <Col span={12} offset={6}>
+                    <PostCard
+                      inputFile={object.inputFile}
+                      // render={render}
+                      // setStateRender={(e) => setStateRender(e)}
+                      postId={object._id}
+                      likeCount={object.likesCount}
+                      cardDescription={object.postDescription}
+                      cardTitle={object.userId.name}
+                    />
+                  </Col>
+                </Row>
+              );
+            })}
+          </div>
+        </>
+      )}
     </>
   );
 };

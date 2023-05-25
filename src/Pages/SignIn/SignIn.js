@@ -11,20 +11,20 @@ const SignIn = () => {
       email: values.email,
       password: values.password,
     };
-
-    await axios
-      .post(`${process.env.REACT_APP_API}signin/`, payload)
-      .then((res) => {
-        console.log(res.data);
-        if (res.data.message === "Login Successful") {
-          localStorage.setItem("jwt", res.data.jwt);
-          message.success("Login Successful");
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        message.error(err.response.data.message);
-      });
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API}signin/`,
+        payload
+      );
+      console.log(res.data);
+      if (res.data.message === "Login Successful") {
+        localStorage.setItem("jwt", res.data.jwt);
+        message.success("Login Successful");
+        navigate("/");
+      }
+    } catch (err) {
+      message.error(err.response.data.message);
+    }
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -85,7 +85,7 @@ const SignIn = () => {
             span: 12,
           }}
         >
-          <Link to={"/"}>Register Now</Link>
+          <Link to={"/signup"}>Register Now</Link>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>

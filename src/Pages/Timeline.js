@@ -4,7 +4,9 @@ import Navbar from "../Components/Navbar";
 import { contentRoutes } from "../constants";
 const { Header, Content } = Layout;
 const Timeline = () => {
-  const [activekey, setActiveKey] = useState("");
+  // console.log("timeline");
+  const [activekey, setActiveKey] = useState("allposts");
+
   return (
     <>
       <Layout className="layout">

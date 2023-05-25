@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Card, Input, Space, Form } from "antd";
 import { Modal, message, Col, Row } from "antd";
 import Buttons from "./Buttons";
+import { useDispatch, useSelector } from "react-redux";
+import { renderPost } from "../ReduxToolkit/store/PostSlices/RenderPostsSlice";
+import { handleLikeState } from "../ReduxToolkit/store/PostSlices/LikeClickedSlice";
+import { fetchCommentsData } from "../ReduxToolkit/store/commentSlices/CommentsSlice";
+// import { renderComments } from "../ReduxToolkit/store/commentSlices/CommentsRenderSlice";
 import {
   CommentOutlined,
   ShareAltOutlined,
@@ -11,7 +16,7 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import {
-  showComments,
+  // showComments,
   handleCommentSubmit,
   handleCommentDelete,
   likePost,
@@ -25,9 +30,24 @@ const PostCard = (props) => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [commentData, setCommentData] = useState([]);
+  // const [commentData, setCommentData] = useState([]);
   const [commentRender, setCommentRender] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
+  // const [isClicked, setIsClicked] = useState(false);
+  const dispatch = useDispatch();
+
+  const clicked = useSelector((state) => {
+    return state.like;
+  });
+
+  const commentData = useSelector((state) => {
+    // console.log(state.comment.value);
+    return state.comment.value;
+  });
+
+  // const commentRender = useSelector((state) => {
+  //   return state.commentRender.value;
+  // });
+  // console.log(clicked.value);
 
   const handleOk = () => {
     setIsModalOpen(false);
@@ -40,18 +60,22 @@ const PostCard = (props) => {
   const handleCommentSubmitFinish = async (values) => {
     await handleCommentSubmit(props.postId, values);
     setCommentRender(!commentRender);
+    // dispatch(renderComments());
     form.resetFields();
   };
   const handleLike = async () => {
-    props?.setStateRender(!props?.render);
-    if (isClicked === false) {
+    dispatch(renderPost());
+    // props?.setStateRender(!props?.render);
+
+    if (clicked.value === false) {
       const payload = {
         postId: props.postId,
         like: "true",
       };
       try {
         const res = await likePost(payload);
-        setIsClicked(!isClicked);
+        dispatch(handleLikeState());
+        // setIsClicked(!isClicked);
         message.success("Liked");
         console.log(res.data);
       } catch (error) {
@@ -65,7 +89,8 @@ const PostCard = (props) => {
       };
       try {
         const res = await likePost(payload);
-        setIsClicked(!isClicked);
+        // setIsClicked(!isClicked);
+        dispatch(handleLikeState());
         message.success("Disliked");
         console.log(res.data);
       } catch (error) {
@@ -77,11 +102,13 @@ const PostCard = (props) => {
   const handleUpdateValues = async (value) => {
     await handleUpdate(props.postId, value);
     form.resetFields();
-    props?.setStateRender(!props?.render);
+    // props?.setStateRender(!props?.render);
+    dispatch(renderPost());
   };
-  const getCommentsData = async () => {
-    const res = await showComments(props.postId);
-    setCommentData(res);
+  const getCommentsData = () => {
+    // const res = await showComments(props.postId);
+    dispatch(fetchCommentsData(props.postId));
+    // setCommentData(res);
   };
 
   useEffect(() => {
@@ -96,6 +123,7 @@ const PostCard = (props) => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
+        {/* {console.log(commentData, "Commentdata")} */}
         {commentData?.map((object, i) => {
           return (
             <>
@@ -106,10 +134,11 @@ const PostCard = (props) => {
                 <Col span={4} offset={6}>
                   <Buttons
                     title={<DeleteOutlined />}
-                    onClick={() => {
-                      const res = handleCommentDelete(object.postId);
+                    onClick={async () => {
+                      const res = await handleCommentDelete(object.postId);
                       if (res) {
                         setCommentRender(!commentRender);
+                        // dispatch(renderComments());
                       }
                     }}
                   />
@@ -201,7 +230,7 @@ const PostCard = (props) => {
         }
         actions={[
           <span>
-            {isClicked ? (
+            {clicked.value ? (
               <LikeTwoTone
                 key="likes"
                 id={props.postId}
@@ -235,7 +264,8 @@ const PostCard = (props) => {
             key="delete"
             onClick={() => {
               handleDelete(props.postId);
-              props?.setStateRender(!props?.render);
+              // props?.setStateRender(!props?.render);
+              dispatch(renderPost());
             }}
           />,
           <EditOutlined

@@ -12,7 +12,7 @@ export const getAllPosts = async () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     // setPosts(posts.data);
-    console.log(posts.data);
+    // console.log(posts.data);
     return posts.data;
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -31,7 +31,7 @@ export const getPosts = async () => {
       url: `${process.env.REACT_APP_API}posts/`,
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(posts.data.post);
+    // console.log(posts.data.post);
     return posts.data.post;
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -94,41 +94,40 @@ export const showComments = async (postId) => {
 
 //Comment Submit
 export const handleCommentSubmit = async (postId, values) => {
-  const payload = {
-    comment: values.comment,
-    postId: postId,
-  };
-  await axios({
-    method: "post",
-    url: `${process.env.REACT_APP_API}comments/`,
-    headers: { Authorization: `Bearer ${token}` },
-    data: payload,
-  })
-    .then((res) => {
-      message.success("Comment Posted");
-      console.log(res.data.comments);
-      return res.data.comments;
-    })
-    .catch((error) => {
-      console.log(error);
+  try {
+    const payload = {
+      comment: values.comment,
+      postId: postId,
+    };
+    const res = await axios({
+      method: "post",
+      url: `${process.env.REACT_APP_API}comments/`,
+      headers: { Authorization: `Bearer ${token}` },
+      data: payload,
     });
+    message.success("Comment Posted");
+    console.log(res.data.comments);
+    return res.data.comments;
+  } catch (error) {
+    message.error(error.response.data.message);
+  }
 };
 
 //Comment Delete
 export const handleCommentDelete = async (postId) => {
-  await axios({
-    method: "delete",
-    url: `${process.env.REACT_APP_API}comments/${postId._id}`,
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then((res) => {
-      message.success(res.data.message);
-      console.log(res.data.message);
-      return res.data.message;
-    })
-    .catch((err) => {
-      message.error(err.response.data.message);
+  try {
+    const res = await axios({
+      method: "delete",
+      url: `${process.env.REACT_APP_API}comments/${postId._id}`,
+      headers: { Authorization: `Bearer ${token}` },
     });
+    message.success(res.data.message);
+    console.log(res.data.message);
+
+    return res.data.message;
+  } catch (error) {
+    message.error(error.response.data.message);
+  }
 };
 
 //Post Like
@@ -207,19 +206,17 @@ export const handleCommentDelete = async (postId) => {
 
 //Delete Post
 export const handleDelete = async (postId) => {
-  await axios({
-    method: "delete",
-    url: `${process.env.REACT_APP_API}posts/${postId}`,
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then((res) => {
-      message.success(res.data.message);
-      //   props?.setStateRender(!props?.render);
-      console.log(res.data);
-    })
-    .catch((err) => {
-      message.error(err.response.data.message);
+  try {
+    const res = await axios({
+      method: "delete",
+      url: `${process.env.REACT_APP_API}posts/${postId}`,
+      headers: { Authorization: `Bearer ${token}` },
     });
+    message.success(res.data.message);
+    console.log(res.data);
+  } catch (error) {
+    message.error(error.response.data.message);
+  }
 };
 
 //Update Post
@@ -252,6 +249,7 @@ export const fetchFriends = async () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     // console.log(friends);
+    // console.log(friends.data.message, "Friends");
     return friends.data.message;
     // setFriendResponse(friends.data.message);
   } catch (error) {

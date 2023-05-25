@@ -32,7 +32,7 @@ export const navItems = [
   },
   {
     name: "Friend Requests",
-    key: "friendRequest",
+    key: "friendRequests",
   },
   {
     name: "Logout",

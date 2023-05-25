@@ -15,18 +15,19 @@ const SignUp = () => {
       confirmpassword: values.confirmpassword,
     };
 
-    await axios
-      .post(`${process.env.REACT_APP_API}signup/`, payload)
-      .then((res) => {
-        console.log(res);
-        if (res.data.message === "Created Successfully") {
-          message.success("User Created Successfully");
-          navigate("/signin");
-        }
-      })
-      .catch((err) => {
-        message.error(err.response.data.message);
-      });
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API}signup/`,
+        payload
+      );
+      console.log(res);
+      if (res.data.message === "Created Successfully") {
+        message.success("User Created Successfully");
+        navigate("/signin");
+      }
+    } catch (err) {
+      message.error(err.response.data.message);
+    }
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);

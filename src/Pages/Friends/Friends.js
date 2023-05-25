@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 // import Navbar from "../../Components/Navbar";
 import {
   UserAddOutlined,
@@ -10,30 +12,37 @@ import { Card, Button, Space, message } from "antd";
 import "../../Css/Friends.css";
 import jwt_decode from "jwt-decode";
 import {
-  fetchFriends,
+  // fetchFriends,
   findFriends,
   sendRequest,
   deleteFriend,
 } from "../../Api";
+import { fetchAllFriends } from "../../ReduxToolkit/store/friendsSlices/ShowFriendsSlice";
 const { Search } = Input;
 
 const Friends = () => {
   const token = localStorage.getItem("jwt");
   const decodedToken = jwt_decode(token);
   const [response, setResponse] = useState();
-  const [friendResponse, setFriendResponse] = useState();
+  // const [friendResponse, setFriendResponse] = useState();
   const [sentRequest, setSentRequest] = useState(false);
   const [isFriend, setIsFriend] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const dispatch = useDispatch();
+
+  const friends = useSelector((state) => {
+    return state.friends.value;
+  });
 
   useEffect(() => {
     showFriends();
   }, [isDeleted]);
 
-  const showFriends = async () => {
+  const showFriends = () => {
     try {
-      const res = await fetchFriends();
-      setFriendResponse(res);
+      dispatch(fetchAllFriends());
+      // const res = await fetchFriends();
+      // setFriendResponse(res);
     } catch (error) {
       message.error(error.response.data.message);
     }
@@ -137,7 +146,7 @@ const Friends = () => {
             <th>Id</th>
             <th>Remove</th>
           </tr>
-          {friendResponse?.map((object, i) => {
+          {friends?.map((object, i) => {
             return (
               <>
                 <tr key={i}>
