@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 import PostCard from "../../Components/PostCard";
 import { Col, Row } from "antd";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAllPostsData } from "../../ReduxToolkit/store/PostSlices/AllPostsSlice";
 import { Spin } from "antd";
 
 const AllPosts = () => {
-  // const [render, setStateRender] = useState(false);
-  const token = localStorage.getItem("jwt");
   const dispatch = useDispatch();
 
   const showAllPosts = () => {
@@ -19,18 +16,11 @@ const AllPosts = () => {
     return state.post;
   });
 
-  const renderData = useSelector((state) => {
-    return state.render;
-  });
-
   useEffect(() => {
-    if (token) {
-      showAllPosts();
-    }
-  }, [token, renderData]);
+    showAllPosts();
+  }, []);
   return (
     <>
-      {/* <Spin className="spinner" /> */}
       {data?.isLoading ? (
         <>
           <Spin className="spinner" />
@@ -47,9 +37,8 @@ const AllPosts = () => {
                 <Row key={i}>
                   <Col span={12} offset={6}>
                     <PostCard
+                      component="allposts"
                       inputFile={object.inputFile}
-                      // render={render}
-                      // setStateRender={(e) => setStateRender(e)}
                       postId={object._id}
                       likeCount={object.likesCount}
                       cardDescription={object.postDescription}

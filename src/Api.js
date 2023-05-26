@@ -11,8 +11,6 @@ export const getAllPosts = async () => {
       url: `${process.env.REACT_APP_API}posts/all`,
       headers: { Authorization: `Bearer ${token}` },
     });
-    // setPosts(posts.data);
-    // console.log(posts.data);
     return posts.data;
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -31,7 +29,7 @@ export const getPosts = async () => {
       url: `${process.env.REACT_APP_API}posts/`,
       headers: { Authorization: `Bearer ${token}` },
     });
-    // console.log(posts.data.post);
+    console.log(posts.data.post);
     return posts.data.post;
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -75,7 +73,9 @@ export const likePost = async (payload) => {
     headers: { Authorization: `Bearer ${token}` },
     data: payload,
   });
-  return res;
+  // console.log(res.data.post.likesCount, "This is Post");
+  // console.log(res.data.post, "hahahaha");
+  return res.data?.post;
 };
 //Show Comments
 export const showComments = async (postId) => {

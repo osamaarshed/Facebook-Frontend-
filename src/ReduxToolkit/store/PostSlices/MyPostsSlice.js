@@ -1,15 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { getPosts } from "../../../Api";
+import { getPosts, likePost } from "../../../Api";
 
-export const fetchMyPostsData = createAsyncThunk("", async () => {
-  const res = await getPosts();
-  return res;
-});
+export const fetchMyPostsData = createAsyncThunk(
+  "posts/fetchMyPostsData",
+  async () => {
+    const res = await getPosts();
+    return res;
+  }
+);
+
+export const likeMyPostUpdate = createAsyncThunk(
+  "posts/likeMyPostUpdate",
+  async (payload) => {
+    const res = await likePost(payload);
+    return res;
+  }
+);
 
 const myPostsSlice = createSlice({
   name: "mypost",
-  initialState: { isLoading: false, value: null, error: false },
+  initialState: {
+    isLoading: false,
+    value: null,
+    error: false,
+  },
   extraReducers: {
     [fetchMyPostsData.pending]: (state) => {
       state.isLoading = true;
@@ -20,6 +35,18 @@ const myPostsSlice = createSlice({
     },
     [fetchMyPostsData.rejected]: (state) => {
       state.error = true;
+    },
+    [likeMyPostUpdate.fulfilled]: (state, action) => {
+      console.log(action.payload, "Action.Payload of MY posts");
+
+      const data = [...state.value].map((e) =>
+        e._id === action.payload._id
+          ? { ...e, likesCount: action.payload.likesCount }
+          : e
+      );
+      state.value = data;
+      console.log(data, "state data");
+      console.log(state.value, "State Value");
     },
   },
 });

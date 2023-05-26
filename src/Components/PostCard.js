@@ -4,9 +4,7 @@ import { Modal, message, Col, Row } from "antd";
 import Buttons from "./Buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { renderPost } from "../ReduxToolkit/store/PostSlices/RenderPostsSlice";
-import { handleLikeState } from "../ReduxToolkit/store/PostSlices/LikeClickedSlice";
 import { fetchCommentsData } from "../ReduxToolkit/store/commentSlices/CommentsSlice";
-// import { renderComments } from "../ReduxToolkit/store/commentSlices/CommentsRenderSlice";
 import {
   CommentOutlined,
   ShareAltOutlined,
@@ -16,13 +14,13 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import {
-  // showComments,
   handleCommentSubmit,
   handleCommentDelete,
-  likePost,
   handleDelete,
   handleUpdate,
 } from "../Api";
+import { likePostUpdate } from "../ReduxToolkit/store/PostSlices/AllPostsSlice";
+import { likeMyPostUpdate } from "../ReduxToolkit/store/PostSlices/MyPostsSlice";
 
 const { Meta } = Card;
 
@@ -30,24 +28,13 @@ const PostCard = (props) => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  // const [commentData, setCommentData] = useState([]);
   const [commentRender, setCommentRender] = useState(false);
-  // const [isClicked, setIsClicked] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const dispatch = useDispatch();
 
-  const clicked = useSelector((state) => {
-    return state.like;
-  });
-
   const commentData = useSelector((state) => {
-    // console.log(state.comment.value);
     return state.comment.value;
   });
-
-  // const commentRender = useSelector((state) => {
-  //   return state.commentRender.value;
-  // });
-  // console.log(clicked.value);
 
   const handleOk = () => {
     setIsModalOpen(false);
@@ -60,24 +47,21 @@ const PostCard = (props) => {
   const handleCommentSubmitFinish = async (values) => {
     await handleCommentSubmit(props.postId, values);
     setCommentRender(!commentRender);
-    // dispatch(renderComments());
     form.resetFields();
   };
   const handleLike = async () => {
-    dispatch(renderPost());
-    // props?.setStateRender(!props?.render);
-
-    if (clicked.value === false) {
+    if (isClicked === false) {
       const payload = {
         postId: props.postId,
         like: "true",
       };
       try {
-        const res = await likePost(payload);
-        dispatch(handleLikeState());
-        // setIsClicked(!isClicked);
+        setIsClicked(!isClicked);
+        props.component === "allposts"
+          ? dispatch(likePostUpdate(payload))
+          : dispatch(likeMyPostUpdate(payload));
+
         message.success("Liked");
-        console.log(res.data);
       } catch (error) {
         message.error(error.response.data.message);
         console.log(error.response.data.message);
@@ -88,11 +72,11 @@ const PostCard = (props) => {
         like: "false",
       };
       try {
-        const res = await likePost(payload);
-        // setIsClicked(!isClicked);
-        dispatch(handleLikeState());
+        setIsClicked(!isClicked);
+        props.component === "allposts"
+          ? dispatch(likePostUpdate(payload))
+          : dispatch(likeMyPostUpdate(payload));
         message.success("Disliked");
-        console.log(res.data);
       } catch (error) {
         message.error(error.response.data.message);
         console.log(error.response.data.message);
@@ -123,7 +107,6 @@ const PostCard = (props) => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        {/* {console.log(commentData, "Commentdata")} */}
         {commentData?.map((object, i) => {
           return (
             <>
@@ -138,7 +121,6 @@ const PostCard = (props) => {
                       const res = await handleCommentDelete(object.postId);
                       if (res) {
                         setCommentRender(!commentRender);
-                        // dispatch(renderComments());
                       }
                     }}
                   />
@@ -230,7 +212,7 @@ const PostCard = (props) => {
         }
         actions={[
           <span>
-            {clicked.value ? (
+            {isClicked ? (
               <LikeTwoTone
                 key="likes"
                 id={props.postId}
@@ -264,7 +246,6 @@ const PostCard = (props) => {
             key="delete"
             onClick={() => {
               handleDelete(props.postId);
-              // props?.setStateRender(!props?.render);
               dispatch(renderPost());
             }}
           />,
