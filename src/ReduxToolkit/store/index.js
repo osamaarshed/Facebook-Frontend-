@@ -8,6 +8,7 @@ import { commentsRenderSlice } from "./commentSlices/CommentsRenderSlice";
 import { showFriendsSlice } from "./friendsSlices/ShowFriendsSlice";
 import { friendRequestsSlice } from "./friendsSlices/FriendRequestsSlice";
 import { likeCountSlice } from "./PostSlices/LikeSlice";
+import { showMessageSlice } from "./messagesSlices/showMessageSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     commentRender: commentsRenderSlice.reducer,
     friends: showFriendsSlice.reducer,
     friendRequests: friendRequestsSlice.reducer,
+    messages: showMessageSlice.reducer,
   },
 });
 

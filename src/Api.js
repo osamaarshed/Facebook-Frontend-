@@ -29,7 +29,6 @@ export const getPosts = async () => {
       url: `${process.env.REACT_APP_API}posts/`,
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(posts.data.post);
     return posts.data.post;
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -68,13 +67,11 @@ export const postCreate = async (data) => {
 //Like Post
 export const likePost = async (payload) => {
   const res = await axios({
-    method: "post",
+    method: "put",
     url: `${process.env.REACT_APP_API}posts/like`,
     headers: { Authorization: `Bearer ${token}` },
     data: payload,
   });
-  // console.log(res.data.post.likesCount, "This is Post");
-  // console.log(res.data.post, "hahahaha");
   return res.data?.post;
 };
 //Show Comments
@@ -327,5 +324,53 @@ export const handleRequest = async (status, friendId) => {
   } catch (err) {
     message.error(err.response.data.message);
     console.log(err.response.data.message);
+  }
+};
+
+//Show Messages
+export const showMessages = async () => {
+  // console.log("idhr", payload);
+  try {
+    const messages = await axios({
+      method: "GET",
+      url: `${process.env.REACT_APP_API}messages/`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    // console.log("Messages: ", messages.data.chats);
+    return messages.data.chats;
+  } catch (error) {
+    message.error(error.response.data.message);
+    console.log(error.response.data.message);
+  }
+};
+
+//SendMessage
+export const saveMessages = async (
+  chatRoomId,
+  participant2,
+  messageOwner,
+  text,
+  time
+) => {
+  try {
+    // console.log("chatRoomId: ", chatRoomId);
+    const payload = {
+      chatRoomId: chatRoomId,
+      participant2: participant2,
+      messageOwner: messageOwner,
+      text: text,
+      time: time,
+    };
+    const res = await axios({
+      method: "post",
+      url: `${process.env.REACT_APP_API}messages/`,
+      headers: { Authorization: `Bearer ${token}` },
+      data: payload,
+    });
+    // console.log("response of API", res);
+    return res.data;
+  } catch (error) {
+    message.error(error.response.data.message);
+    console.log(error.response.data.message);
   }
 };

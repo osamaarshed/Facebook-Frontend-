@@ -9,6 +9,9 @@ import Friends from "./Pages/Friends/Friends";
 import FriendRequests from "./Pages/Friends/FriendRequests";
 import AllPosts from "./Pages/Posts/AllPosts";
 import Timeline from "./Pages/Timeline";
+import Messages from "./Pages/Messages/Messages";
+import Test from "./Pages/Test/Test";
+import Test2 from "./Pages/Test/Test2";
 
 const router = createBrowserRouter([
   {
@@ -36,12 +39,24 @@ const router = createBrowserRouter([
     element: <CreatePosts />,
   },
   {
+    path: "/messages",
+    element: <Messages />,
+  },
+  {
     path: "/friends",
     element: <Friends />,
   },
   {
     path: "/friendRequests",
     element: <FriendRequests />,
+  },
+  {
+    path: "/test",
+    element: <Test />,
+  },
+  {
+    path: "/test2",
+    element: <Test2 />,
   },
 ]);
 

@@ -11,13 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+.layout {
+  height: 100%;
+  width: 100%;
+  /* overflow: auto; */
+}
+.sider {
+  /* height: 30%; */
+  width: 10%;
+}
+.sideNavMenu {
+  width: 80%;
+}
 .spinner {
   margin: 20% 0;
   margin-bottom: 20%;
   padding: 30px 50px;
   text-align: center;
-  /* background: rgba(0, 0, 0, 0.05); */
   border-radius: 4px;
 }
 .friendRequest-div {
@@ -31,4 +41,101 @@ code {
   margin-bottom: 15%;
   color: red;
   font-size: 30px;
+}
+.chats-sendButton {
+  /* margin-left: 20%; */
+  float: right;
+}
+/* .chats-modal {
+  color: green;
+} */
+.chats-modalChatHeader {
+  text-align: center;
+  background-color: rgb(214, 214, 214);
+}
+.chats-modalChatBody {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  overflow: scroll;
+}
+#me {
+  background-color: rgb(169, 169, 170);
+  color: white;
+  border-radius: 5%;
+  padding-left: 5%;
+  width: 90%;
+  font-size: 15px;
+  margin: 2%;
+}
+#other {
+  background-color: rgb(112, 112, 112);
+  color: white;
+  border-radius: 5%;
+  padding-left: 5%;
+  width: 90%;
+  font-size: 15px;
+  margin: 2%;
+}
+.chats-modalChatBody-time {
+  color: rgb(63, 63, 63);
+  font-size: 11px;
+  float: left;
+  /* justify-content: space-between; */
+}
+.chats-modalChatBody-name {
+  color: rgb(63, 63, 63);
+  font-size: 11px;
+  margin-right: 10%;
+  float: right;
+}
+.chats-modalChatFooter {
+  display: flex;
+  flex-direction: row;
+}
+.searchFriend-card {
+  margin-top: 4%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.navbar-menu-animateddiv {
+  height: 100%;
+  /* color: brown; */
+}
+.timeline-sider {
+  height: 100%;
+}
+.timeline-layout {
+  height: 100%;
+  background-color: rgb(223, 223, 223);
+}
+.postCard-container {
+  position: relative;
+  width: 100%;
+}
+.postCard-comment-modal {
+  /* position: "absolute";
+  display: "flex";
+  align-items: "center";
+  justify-content: "center";
+  z-index: 1;
+  background-color: brown; */
+  /* margin-top: 10%; */
+
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+.test-div {
+  height: 100vh;
+  width: 100%;
+  overflow: scroll;
 }

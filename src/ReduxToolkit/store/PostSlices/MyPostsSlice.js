@@ -37,19 +37,14 @@ const myPostsSlice = createSlice({
       state.error = true;
     },
     [likeMyPostUpdate.fulfilled]: (state, action) => {
-      console.log(action.payload, "Action.Payload of MY posts");
-
       const data = [...state.value].map((e) =>
         e._id === action.payload._id
           ? { ...e, likesCount: action.payload.likesCount }
           : e
       );
       state.value = data;
-      console.log(data, "state data");
-      console.log(state.value, "State Value");
     },
   },
 });
 
 export { myPostsSlice };
-// export const { showPosts } = myPostsSlice.actions;

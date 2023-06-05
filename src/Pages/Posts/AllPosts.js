@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllPostsData } from "../../ReduxToolkit/store/PostSlices/AllPostsSlice";
 import { Spin } from "antd";
 
+
 const AllPosts = () => {
   const dispatch = useDispatch();
+  
 
   const showAllPosts = () => {
     dispatch(fetchAllPostsData());
@@ -36,14 +38,16 @@ const AllPosts = () => {
               return (
                 <Row key={i}>
                   <Col span={12} offset={6}>
-                    <PostCard
-                      component="allposts"
-                      inputFile={object.inputFile}
-                      postId={object._id}
-                      likeCount={object.likesCount}
-                      cardDescription={object.postDescription}
-                      cardTitle={object.userId.name}
-                    />
+                    <div>
+                      <PostCard
+                        component="allposts"
+                        inputFile={object.inputFile}
+                        postId={object._id}
+                        likeCount={object.likesCount}
+                        cardDescription={object.postDescription}
+                        cardTitle={object.userId.name}
+                      />
+                    </div>
                   </Col>
                 </Row>
               );

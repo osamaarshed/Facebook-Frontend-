@@ -16,9 +16,12 @@ const MyPosts = () => {
     return state.myposts;
   });
 
+  const render = useSelector((state) => {
+    return state.render.value;
+  });
   useEffect(() => {
     showPosts();
-  }, []);
+  }, [render]);
   return (
     <>
       {data.isLoading ? (

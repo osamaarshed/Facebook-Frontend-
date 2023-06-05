@@ -1,6 +1,21 @@
-.Navbar-SubMenu {
+.navbar-subMenu {
   margin-left: auto;
+}
+.Menu-Items {
+  margin-left: 30%;
+  /* float: right; */
 }
 .Navbar-header-h1 {
   color: white;
+  margin-left: 50%;
 }
+/* .navbar-menu-animateddiv {
+  height: 100%;
+
+} */
+.navbar-menu {
+  /* height: 100%; */
+  width: 100%;
+  background-color: rgb(223, 223, 223);
+}
+

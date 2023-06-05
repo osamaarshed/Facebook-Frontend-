@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-// import { useSelector } from "react-redux";
-// import Navbar from "../../Components/Navbar";
 import {
   UserAddOutlined,
   DeleteOutlined,
@@ -11,12 +9,7 @@ import {
 import { Card, Button, Space, message } from "antd";
 import "../../Css/Friends.css";
 import jwt_decode from "jwt-decode";
-import {
-  // fetchFriends,
-  findFriends,
-  sendRequest,
-  deleteFriend,
-} from "../../Api";
+import { findFriends, sendRequest, deleteFriend } from "../../Api";
 import { fetchAllFriends } from "../../ReduxToolkit/store/friendsSlices/ShowFriendsSlice";
 const { Search } = Input;
 
@@ -24,7 +17,6 @@ const Friends = () => {
   const token = localStorage.getItem("jwt");
   const decodedToken = jwt_decode(token);
   const [response, setResponse] = useState();
-  // const [friendResponse, setFriendResponse] = useState();
   const [sentRequest, setSentRequest] = useState(false);
   const [isFriend, setIsFriend] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
@@ -41,8 +33,6 @@ const Friends = () => {
   const showFriends = () => {
     try {
       dispatch(fetchAllFriends());
-      // const res = await fetchFriends();
-      // setFriendResponse(res);
     } catch (error) {
       message.error(error.response.data.message);
     }
@@ -90,7 +80,6 @@ const Friends = () => {
   };
   return (
     <div>
-      {/* <Navbar /> */}
       <h1>Friends</h1>
       <Search
         style={{ width: "80%" }}
@@ -99,9 +88,9 @@ const Friends = () => {
         enterButton
       />
       <div>
-        {response?.map((object) => {
+        {response?.map((object, i) => {
           return (
-            <>
+            <React.Fragment key={i}>
               <div className="friends-card">
                 <Card
                   title={object.name}
@@ -133,23 +122,25 @@ const Friends = () => {
                   </Space>
                 </Card>
               </div>
-            </>
+            </React.Fragment>
           );
         })}
       </div>
       <h1>All Friends</h1>
       <div>
         <table>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Id</th>
-            <th>Remove</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Id</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
           {friends?.map((object, i) => {
             return (
-              <>
-                <tr key={i}>
+              <tbody key={i}>
+                <tr>
                   <th>{object.name}</th>
                   <th>{object.email}</th>
                   <th>{object._id}</th>
@@ -164,7 +155,7 @@ const Friends = () => {
                     </Button>
                   </th>
                 </tr>
-              </>
+              </tbody>
             );
           })}
         </table>
