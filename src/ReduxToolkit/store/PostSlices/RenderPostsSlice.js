@@ -6,7 +6,6 @@ const renderSlice = createSlice({
   reducers: {
     renderPost(state) {
       state.value = !state.value;
-      //   console.log("renderingggggg");
     },
   },
 });

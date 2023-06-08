@@ -16,7 +16,6 @@ const showMessageSlice = createSlice({
     value: null,
     error: false,
   },
-  //   reducers: {},
   extraReducers: {
     [fetchAllMessages.pending]: (state) => {
       state.isLoading = true;

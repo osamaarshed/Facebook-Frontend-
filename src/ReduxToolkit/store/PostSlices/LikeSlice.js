@@ -8,7 +8,6 @@ const likeCountSlice = createSlice({
   reducers: {
     updateCount(state, action) {
       state.value = action.payload;
-      //   console.log(action.payload);
     },
   },
 });

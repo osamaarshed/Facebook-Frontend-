@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Layout, Button, Menu, Space } from "antd";
+import { Layout, Menu, Space } from "antd";
 import Navbar from "../Components/Navbar";
 import { contentRoutes } from "../constants";
 import { useSpring, animated } from "@react-spring/web";
-import SideNav from "../Components/SideNav";
 import { sideNavItems } from "../constants";
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -51,7 +50,7 @@ const Timeline = () => {
               collapsedWidth={0}
               reverseArrow={false}
               trigger={null}
-              theme="light"
+              theme="dark"
             >
               <Menu
                 className="navbar-menu"
@@ -68,6 +67,7 @@ const Timeline = () => {
               <Navbar
                 setActiveKey={(e) => setActiveKey(e)}
                 setCollapsed={(e) => setCollapsed(e)}
+                activekey={activekey}
                 collapsed={collapsed}
               />
             </Header>

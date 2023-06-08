@@ -1,51 +1,51 @@
-import React, { useState } from "react";
-import { animated, useSpring, to } from "@react-spring/web";
+import React from "react";
+import { animated, useScroll, useSpring } from "@react-spring/web";
+
+//useScroll Hook is used if you want animation onScroll. You can also get the value of scrollPosition
+// from useScroll Hook and on the basis of scroll position you can perform animations you want.
 
 const Test = () => {
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const { scrollYProgress } = useScroll({
+    onChange: ({ value: { scrollYProgress } }) => {
+      api.start({
+        to: {
+          transform:
+            scrollYProgress > 0
+              ? `translate3d(0px, ${scrollYProgress * 150}vh, 0px) scale3d(${
+                  1 - scrollYProgress
+                }, ${1 - scrollYProgress}, 1)`
+              : "translate3d(0px,0vh,0px) scale3d(1, 1, 1)",
+          transformStyle: "preserve-3d",
+          opacity:
+            scrollYProgress > 0 ? 1 - scrollYProgress : 1 - scrollYProgress,
+        },
+        reverse: true,
+      });
+    },
+  });
   const [animation, api] = useSpring(() => ({
     from: {
-      transform: scrollPosition > 20 ? "translateY(0px)" : "translateY(0px)",
+      transform:
+        scrollYProgress > 0
+          ? "translate3d(0px,0vh,0px) scale3d(1, 1, 1)"
+          : "translate3d(0px,0vh,0px) scale3d(1, 1, 1)",
+      opacity: scrollYProgress > 0 ? 1 - scrollYProgress : 1 - scrollYProgress,
     },
   }));
-  const opacitySetter = () => {
-    if (scrollPosition >= 10 && scrollPosition <= 30) {
-      return 0.8;
-    } else if (scrollPosition >= 30 && scrollPosition <= 50) {
-      return 0.5;
-    } else if (scrollPosition >= 50 && scrollPosition <= 80) {
-      return 0.2;
-    } else if (scrollPosition >= 80) {
-      return 0;
-    } else {
-      return 1;
-    }
-  };
-  const handleScroll = (event) => {
-    setScrollPosition(event.target.scrollTop);
-    api.start({
-      to: {
-        transform:
-          scrollPosition > 20
-            ? `translateY(${scrollPosition}px)`
-            : "translateY(0px)",
-        opacity: opacitySetter(),
-      },
-      reverse: true,
-    });
-  };
+
   return (
-    <div className="test-div" onScroll={handleScroll}>
-      <h1>Scroller</h1>
+    <div className="test-div">
+      <h1>useScroll Hook</h1>
       <div>
-        <animated.p
+        <animated.div
           style={{
+            willChange: `transform, opacity`,
             fontSize: "100px",
             ...animation,
           }}
         >
-          TEXT
-        </animated.p>
+          <p>TEXT</p>
+        </animated.div>
 
         <div
           style={{

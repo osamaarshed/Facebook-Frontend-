@@ -16,7 +16,6 @@ const commentsSlice = createSlice({
     value: null,
     error: false,
   },
-  //   reducers: {},
   extraReducers: {
     [fetchCommentsData.pending]: (state) => {
       state.isLoading = true;

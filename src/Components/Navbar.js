@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Layout, Menu, Button } from "antd";
 import { Link } from "react-router-dom";
 import "../Css/Navbar.css";
@@ -13,7 +13,7 @@ const navStyle = {
   alignItems: "center",
 };
 
-const Navbar = ({ setActiveKey, setCollapsed, collapsed }) => {
+const Navbar = ({ setActiveKey, setCollapsed, collapsed, activekey }) => {
   const navigate = useNavigate();
 
   const toggleCollapsed = () => {
@@ -30,26 +30,36 @@ const Navbar = ({ setActiveKey, setCollapsed, collapsed }) => {
   return (
     <>
       <Header style={navStyle}>
-        <Button
-          type="dark"
-          onClick={() => {
-            toggleCollapsed();
-          }}
-        >
-          {collapsed ? (
+        {collapsed ? (
+          <Button
+            style={{
+              marginLeft: "-21%",
+            }}
+            type="dark"
+            onClick={() => {
+              toggleCollapsed();
+            }}
+          >
             <CloseOutlined
               style={{
                 color: "white",
               }}
             />
-          ) : (
+          </Button>
+        ) : (
+          <Button
+            type="dark"
+            onClick={() => {
+              toggleCollapsed();
+            }}
+          >
             <UnorderedListOutlined
               style={{
                 color: "white",
               }}
             />
-          )}
-        </Button>
+          </Button>
+        )}
 
         <Link to="/">
           <h1 className="Navbar-header-h1">Facebook</h1>

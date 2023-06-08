@@ -5,8 +5,6 @@ import Buttons from "./Buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { renderPost } from "../ReduxToolkit/store/PostSlices/RenderPostsSlice";
 import { fetchCommentsData } from "../ReduxToolkit/store/commentSlices/CommentsSlice";
-import { useSpring, animated } from "@react-spring/web";
-// import { useSpring, animated } from "@react-spring/web";
 import {
   CommentOutlined,
   ShareAltOutlined,
@@ -28,17 +26,12 @@ const { Meta } = Card;
 
 const PostCard = (props) => {
   const [form] = Form.useForm();
-  const [isCommentClicked, setIsCommentClicked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [commentRender, setCommentRender] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
   const dispatch = useDispatch();
-
-  // const handleModal = () => {
-  //   setIsCommentClicked(!isCommentClicked);
-  // };
 
   const commentData = useSelector((state) => {
     return state.comment.value;
@@ -109,38 +102,38 @@ const PostCard = (props) => {
 
   return (
     <div className="postCard-container">
-      <div>
-        <Modal
-          title="Comments"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          {commentData?.map((object, i) => {
-            return (
-              <Row key={i}>
-                <Col span={12}>
-                  <b> {object.userId.name} :</b> " {object.comment} "
-                </Col>
-                <Col span={4} offset={6}>
-                  <Buttons
-                    title={<DeleteOutlined />}
-                    onClick={async () => {
-                      const res = await handleCommentDelete(object.postId);
-                      if (res) {
-                        setCommentRender(!commentRender);
-                      }
-                    }}
-                  />
-                </Col>
-              </Row>
-            );
-          })}
-          <Space.Compact
-            style={{
-              width: "100%",
-            }}
-          >
+      <Modal
+        className="postCard-modal"
+        centered={true}
+        title="Comments"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <div className="postCard-comment-modal-div">
+          <div className="postCard-comments">
+            {commentData?.map((object, i) => {
+              return (
+                <Row key={i}>
+                  <Col span={12}>
+                    <b> {object.userId.name} :</b> " {object.comment} "
+                  </Col>
+                  <Col span={4} offset={6}>
+                    <Buttons
+                      title={<DeleteOutlined />}
+                      onClick={async () => {
+                        const res = await handleCommentDelete(object.postId);
+                        if (res) {
+                          setCommentRender(!commentRender);
+                        }
+                      }}
+                    />
+                  </Col>
+                </Row>
+              );
+            })}
+          </div>
+          <Space.Compact className="postCard-comment-modal-space">
             <Form
               name="control-hooks"
               onFinish={handleCommentSubmitFinish}
@@ -164,8 +157,8 @@ const PostCard = (props) => {
               </Form.Item>
             </Form>
           </Space.Compact>
-        </Modal>
-      </div>
+        </div>
+      </Modal>
 
       <Modal
         title="Edit Post"
@@ -202,27 +195,8 @@ const PostCard = (props) => {
           </Form>
         </Space.Compact>
       </Modal>
-      {/* <animated.div
-        onMouseEnter={() => {
-          setIsHover(true);
-          handleHover();
-        }}
-        onMouseLeave={() => {
-          setIsHover(false);
-          handleHover();
-        }}
-        style={{
-          ...springs,
-        }}
-      > */}
+
       <Card
-        style={
-          {
-            // textAlign: "center",
-            // width: 600,
-            // marginTop: "50px",
-          }
-        }
         cover={
           <img
             alt="example"
@@ -291,7 +265,6 @@ const PostCard = (props) => {
           description={props.cardDescription}
         />
       </Card>
-      {/* </animated.div> */}
     </div>
   );
 };

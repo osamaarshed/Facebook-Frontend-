@@ -18,7 +18,6 @@ const FriendRequests = () => {
 
   const friendRequests = useSelector((state) => {
     return state.friendRequests.value;
-    // }
   });
   return (
     <div>

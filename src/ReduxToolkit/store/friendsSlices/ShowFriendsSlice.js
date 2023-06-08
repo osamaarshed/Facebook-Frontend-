@@ -3,7 +3,6 @@ import { fetchFriends } from "../../../Api";
 
 export const fetchAllFriends = createAsyncThunk("", async () => {
   const res = await fetchFriends();
-  //   console.log("asdkjsad");
   return res;
 });
 
@@ -14,7 +13,6 @@ const showFriendsSlice = createSlice({
     value: null,
     error: false,
   },
-  //   reducers: {},
   extraReducers: {
     [fetchAllFriends.pending]: (state) => {
       state.isLoading = true;

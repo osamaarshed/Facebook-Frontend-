@@ -2,7 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import { postSlice } from "./PostSlices/AllPostsSlice";
 import { myPostsSlice } from "./PostSlices/MyPostsSlice";
 import { renderSlice } from "./PostSlices/RenderPostsSlice";
-// import { likeClickedSlice } from "./PostSlices/LikeClickedSlice";
 import { commentsSlice } from "./commentSlices/CommentsSlice";
 import { commentsRenderSlice } from "./commentSlices/CommentsRenderSlice";
 import { showFriendsSlice } from "./friendsSlices/ShowFriendsSlice";
@@ -15,7 +14,6 @@ const store = configureStore({
     post: postSlice.reducer,
     myposts: myPostsSlice.reducer,
     render: renderSlice.reducer,
-    // like: likeClickedSlice.reducer,
     likeCount: likeCountSlice.reducer,
     comment: commentsSlice.reducer,
     commentRender: commentsRenderSlice.reducer,

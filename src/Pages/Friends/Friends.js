@@ -49,7 +49,6 @@ const Friends = () => {
         setIsFriend(false);
       }
       setResponse(res.data);
-      console.log(res.data);
     } catch (error) {
       message.error(error.response.data.message);
     }
@@ -61,10 +60,8 @@ const Friends = () => {
     try {
       const res = await sendRequest(payload);
       message.success("Request Sent");
-      console.log(res.data.message);
     } catch (error) {
       message.error(error.response.data.message);
-      console.log(error.response.data.message);
     }
   };
   const handleDeleteFriend = async (friendId) => {
@@ -72,10 +69,8 @@ const Friends = () => {
       const res = await deleteFriend(friendId);
       message.success(res.data.message);
       setIsDeleted(true);
-      console.log(res.data);
     } catch (error) {
       message.error(error.response.data.message);
-      console.log(error.response.data.message);
     }
   };
   return (

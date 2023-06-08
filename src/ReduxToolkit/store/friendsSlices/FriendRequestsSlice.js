@@ -16,14 +16,12 @@ const friendRequestsSlice = createSlice({
     value: null,
     error: false,
   },
-  //   reducers: {},
   extraReducers: {
     [showFriendRequests.pending]: (state) => {
       state.isLoading = true;
     },
     [showFriendRequests.fulfilled]: (state, action) => {
       state.value = action.payload;
-      // console.log(action.payload, "hjea");
     },
     [showFriendRequests.rejected]: (state) => {
       state.error = true;

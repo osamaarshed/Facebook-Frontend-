@@ -14,10 +14,8 @@ code {
 .layout {
   height: 100%;
   width: 100%;
-  /* overflow: auto; */
 }
 .sider {
-  /* height: 30%; */
   width: 10%;
 }
 .sideNavMenu {
@@ -42,46 +40,82 @@ code {
   color: red;
   font-size: 30px;
 }
+.ant-modal-content {
+  background-color: rgb(236, 236, 236) !important;
+}
+.ant-modal {
+  background-color: rgb(236, 236, 236) !important;
+}
 .chats-sendButton {
-  /* margin-left: 20%; */
   float: right;
 }
-/* .chats-modal {
-  color: green;
-} */
 .chats-modalChatHeader {
   text-align: center;
-  background-color: rgb(214, 214, 214);
+  color: rgb(0, 0, 0);
 }
 .chats-modalChatBody {
   display: flex;
   flex-direction: column;
-  height: 200px;
-  overflow: scroll;
+  height: 250px;
+  overflow: auto;
+  background-color: white;
 }
 #me {
-  background-color: rgb(169, 169, 170);
+  background-color: rgb(65, 65, 252);
   color: white;
-  border-radius: 5%;
+  border-radius: 2%;
   padding-left: 5%;
-  width: 90%;
-  font-size: 15px;
+  padding-right: 5%;
   margin: 2%;
+  float: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 #other {
-  background-color: rgb(112, 112, 112);
-  color: white;
-  border-radius: 5%;
+  background-color: rgb(219, 219, 219);
+  color: rgb(0, 0, 0);
+  border-radius: 2%;
   padding-left: 5%;
-  width: 90%;
-  font-size: 15px;
+  padding-right: 5%;
   margin: 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
+#me .Chats-msg-text {
+  font-size: 12px;
+}
+#me .Chats-msg-senderName {
+  font-size: 10px;
+  float: left;
+  opacity: 0.5;
+}
+#me .Chats-msg-time {
+  font-size: 10px;
+  float: right;
+  opacity: 0.5;
+}
+
+#other .Chats-msg-text {
+  font-size: 12px;
+  margin-left: auto;
+}
+#other .Chats-msg-senderName {
+  font-size: 10px;
+  float: left;
+  opacity: 0.5;
+}
+#other .Chats-msg-time {
+  font-size: 10px;
+  float: right;
+  opacity: 0.5;
+}
+
 .chats-modalChatBody-time {
   color: rgb(63, 63, 63);
   font-size: 11px;
   float: left;
-  /* justify-content: space-between; */
 }
 .chats-modalChatBody-name {
   color: rgb(63, 63, 63);
@@ -91,8 +125,30 @@ code {
 }
 .chats-modalChatFooter {
   display: flex;
-  flex-direction: row;
+
+  /* justify-content: space-between; */
 }
+.Chats-card-message {
+  margin-left: auto;
+  margin-right: 25%;
+  width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chats-message-form {
+  margin-top: 4%;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  /* margin-left: auto;
+  margin-right: 25%; */
+  /* width: 100%; */
+}
+.chats-form-button {
+  margin-left: 100%;
+}
+
 .searchFriend-card {
   margin-top: 4%;
   margin-left: 10%;
@@ -100,42 +156,69 @@ code {
 }
 .navbar-menu-animateddiv {
   height: 100%;
-  /* color: brown; */
 }
 .timeline-sider {
   height: 100%;
 }
 .timeline-layout {
   height: 100%;
-  background-color: rgb(223, 223, 223);
+  background-color: rgba(0, 21, 41, 255);
 }
 .postCard-container {
   position: relative;
   width: 100%;
 }
-.postCard-comment-modal {
-  /* position: "absolute";
-  display: "flex";
-  align-items: "center";
-  justify-content: "center";
-  z-index: 1;
-  background-color: brown; */
-  /* margin-top: 10%; */
 
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+.postCard-modal {
+  text-align: center !important;
 }
-.test-div {
-  height: 100vh;
+.postCard-comment-modal-space {
   width: 100%;
-  overflow: scroll;
+  justify-content: center;
+}
+.postCard-comments {
+  height: 100px;
+  margin-top: 5%;
+  overflow: auto;
+}
+.useTransition-div {
+  cursor: pointer;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: 800;
+  font-size: 100px;
+  will-change: transform, opacity;
+  text-shadow: 0px 2px 40px #00000020, 0px 2px 5px #00000030;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.useSpring-div-container {
+  margin-top: 10%;
+}
+.useSprings-div {
+  border-radius: 50%;
+  width: 10%;
+  height: 100px;
+  margin-left: auto;
+  margin-right: 60%;
+}
+.useTrail-container {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 15%;
+}
+.useTrail-innerdiv {
+  font-size: 100px;
+}
+.parallax-container {
+  margin-bottom: 40%;
+}
+.parallax-p {
+  font-size: 100px;
+  font-weight: 800;
 }

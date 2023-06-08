@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input, message, Card, Button, Modal } from "antd";
 import { SendOutlined } from "@ant-design/icons";
-import { findFriends, saveMessages } from "../Api";
+import { findFriends } from "../Api";
 import jwt_decode from "jwt-decode";
 const { Search } = Input;
 
@@ -53,6 +53,7 @@ const SearchFriends = ({ socket }) => {
 
     const payload = {
       chatRoomId: chatRoomId,
+      participant1: messageOwner,
       participant2: participant2,
       messageOwner: messageOwner,
       text: text,
@@ -60,15 +61,16 @@ const SearchFriends = ({ socket }) => {
     };
     await socket.emit("send_message", payload);
     setMessages((e) => [...e, payload]);
-    const res = await saveMessages(
-      chatRoomId,
-      participant2,
-      messageOwner,
-      text,
-      time
-    );
-    console.log("Response of Search Friends: ", res);
   };
+  const recieveMessage = () => {
+    socket.on("recieve_message", (data) => {
+      console.log("data recieved", data);
+      setMessages(data.messages);
+    });
+  };
+  useEffect(() => {
+    recieveMessage();
+  }, []);
   return (
     <div>
       <Search

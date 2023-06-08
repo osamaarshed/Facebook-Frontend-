@@ -1,6 +1,5 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-// import Home from "./Pages/Home";
 import SignIn from "./Pages/SignIn/SignIn";
 import SignUp from "./Pages/SignUp/SignUp";
 import MyPosts from "./Pages/Posts/MyPosts";
@@ -11,7 +10,10 @@ import AllPosts from "./Pages/Posts/AllPosts";
 import Timeline from "./Pages/Timeline";
 import Messages from "./Pages/Messages/Messages";
 import Test from "./Pages/Test/Test";
-import Test2 from "./Pages/Test/Test2";
+import UseTransition from "./Pages/Test/UseTransition";
+import UseSprings from "./Pages/Test/UseSprings";
+import UseTrail from "./Pages/Test/UseTrail";
+import Parallax from "./Pages/Test/Parallax";
 
 const router = createBrowserRouter([
   {
@@ -55,8 +57,20 @@ const router = createBrowserRouter([
     element: <Test />,
   },
   {
-    path: "/test2",
-    element: <Test2 />,
+    path: "/usetransition",
+    element: <UseTransition />,
+  },
+  {
+    path: "/usesprings",
+    element: <UseSprings />,
+  },
+  {
+    path: "/usetrail",
+    element: <UseTrail />,
+  },
+  {
+    path: "/parallax",
+    element: <Parallax />,
   },
 ]);
 

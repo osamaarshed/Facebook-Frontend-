@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, Form, Input, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-// import Navbar from "../../Components/Navbar";
 import "./../../Css/CreatePosts.css";
 import Buttons from "../../Components/Buttons";
 import { postCreate } from "../../Api";
