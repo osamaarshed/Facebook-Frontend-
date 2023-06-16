@@ -3,8 +3,8 @@ import { showMessages } from "../../../Api";
 
 export const fetchAllMessages = createAsyncThunk(
   "messages/fetchAllMessages",
-  async () => {
-    const res = await showMessages();
+  async (page) => {
+    const res = await showMessages(page);
     return res;
   }
 );
@@ -13,7 +13,7 @@ const showMessageSlice = createSlice({
   name: "messages",
   initialState: {
     isLoading: false,
-    value: null,
+    value: [],
     error: false,
   },
   extraReducers: {
@@ -21,7 +21,21 @@ const showMessageSlice = createSlice({
       state.isLoading = true;
     },
     [fetchAllMessages.fulfilled]: (state, action) => {
-      state.value = action.payload;
+      console.log("Action Payload: ", action.payload);
+
+      if (state.value?.length && action.payload) {
+        const newArr = [];
+        state.value.forEach((e, i) => {
+          let messages =
+            action.payload.find((obj) => obj?._id === e?._id)?.messages || [];
+          newArr.push({ ...e, messages: [...messages, ...e?.messages] });
+        });
+
+        state.value = newArr;
+      } else {
+        state.value = action.payload;
+      }
+      console.log("State Value: ", state.value);
       state.isLoading = false;
     },
     [fetchAllMessages.rejected]: (state) => {

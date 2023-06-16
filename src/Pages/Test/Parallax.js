@@ -23,7 +23,7 @@ const ParallaxAnimation = () => {
               ...alignCenter,
               justifyContent: "center",
             }}
-            sticky={{ start: 1, end: 5 }}
+            sticky={{ start: 1, end: 6 }}
           >
             <p
               className="parallax-p"
@@ -41,7 +41,7 @@ const ParallaxAnimation = () => {
               ...alignCenter,
               justifyContent: "center",
             }}
-            sticky={{ start: 2, end: 5 }}
+            sticky={{ start: 2, end: 6 }}
           >
             <p
               className="parallax-p"
@@ -53,7 +53,7 @@ const ParallaxAnimation = () => {
               S
             </p>
           </ParallaxLayer>
-          <ParallaxLayer offset={3} sticky={{ start: 3, end: 5 }}>
+          <ParallaxLayer offset={3} sticky={{ start: 3, end: 6 }}>
             <p
               className="parallax-p"
               style={{
@@ -64,7 +64,7 @@ const ParallaxAnimation = () => {
               A
             </p>
           </ParallaxLayer>
-          <ParallaxLayer offset={4} sticky={{ start: 4, end: 5 }}>
+          <ParallaxLayer offset={4} sticky={{ start: 4, end: 6 }}>
             <p
               className="parallax-p"
               style={{
@@ -75,7 +75,7 @@ const ParallaxAnimation = () => {
               M
             </p>
           </ParallaxLayer>
-          <ParallaxLayer offset={5}>
+          <ParallaxLayer offset={5} sticky={{ start: 5, end: 6 }}>
             <p
               className="parallax-p"
               style={{

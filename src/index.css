@@ -40,11 +40,22 @@ code {
   color: red;
   font-size: 30px;
 }
+.ant-menu-item:hover {
+  color: rgb(141, 141, 141) !important;
+}
+.ant-menu-submenu-title:hover {
+  color: rgb(141, 141, 141) !important;
+}
+
 .ant-modal-content {
   background-color: rgb(236, 236, 236) !important;
 }
 .ant-modal {
   background-color: rgb(236, 236, 236) !important;
+  border-radius: 5%;
+}
+.ant-modal-title {
+  background-color: rgb(236, 236, 236);
 }
 .chats-sendButton {
   float: right;
@@ -52,6 +63,7 @@ code {
 .chats-modalChatHeader {
   text-align: center;
   color: rgb(0, 0, 0);
+  height: 30px;
 }
 .chats-modalChatBody {
   display: flex;
@@ -68,6 +80,7 @@ code {
   padding-right: 5%;
   margin: 2%;
   float: left;
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -79,8 +92,10 @@ code {
   padding-left: 5%;
   padding-right: 5%;
   margin: 2%;
+  margin-left: auto;
   display: flex;
   flex-direction: column;
+  width: 50%;
   justify-content: flex-end;
 }
 #me .Chats-msg-text {
@@ -124,10 +139,21 @@ code {
   float: right;
 }
 .chats-modalChatFooter {
+  margin-top: 5%;
   display: flex;
-
-  /* justify-content: space-between; */
+  flex-direction: row;
+  justify-content: center;
 }
+.chats-message-form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+/* .ant-form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+} */
 .Chats-card-message {
   margin-left: auto;
   margin-right: 25%;
@@ -136,19 +162,6 @@ code {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.chats-message-form {
-  margin-top: 4%;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  /* margin-left: auto;
-  margin-right: 25%; */
-  /* width: 100%; */
-}
-.chats-form-button {
-  margin-left: 100%;
-}
-
 .searchFriend-card {
   margin-top: 4%;
   margin-left: 10%;
@@ -168,7 +181,6 @@ code {
   position: relative;
   width: 100%;
 }
-
 .postCard-modal {
   text-align: center !important;
 }
@@ -180,6 +192,9 @@ code {
   height: 100px;
   margin-top: 5%;
   overflow: auto;
+}
+.postCard-comment-delete:hover {
+  color: red;
 }
 .useTransition-div {
   cursor: pointer;
@@ -221,4 +236,38 @@ code {
 .parallax-p {
   font-size: 100px;
   font-weight: 800;
+}
+.Footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
+  background-color: rgba(0, 21, 41, 255);
+  color: white;
+}
+.Content-container {
+  background-color: #f0f0f0;
+  padding-bottom: 5%;
+  padding-top: 5%;
+}
+.messages-container {
+  background-color: #f0f0f0;
+  height: 100vh;
+  overflow: hidden;
+}
+.messages-layout {
+  padding-top: 5%;
+  padding-bottom: 5%;
+  padding-right: 7%;
+  padding-left: 7%;
+  background-color: #f0f0f0;
+}
+.messages-content {
+  padding-top: 30px;
+}
+.allchats-listitemMeta {
+  cursor: pointer;
+  text-align: start;
+  margin-left: 5%;
 }

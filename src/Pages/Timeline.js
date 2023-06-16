@@ -4,6 +4,7 @@ import Navbar from "../Components/Navbar";
 import { contentRoutes } from "../constants";
 import { useSpring, animated } from "@react-spring/web";
 import { sideNavItems } from "../constants";
+import FooterSection from "../Components/FooterSection";
 const { Header, Content, Sider, Footer } = Layout;
 
 const Timeline = () => {
@@ -71,9 +72,11 @@ const Timeline = () => {
                 collapsed={collapsed}
               />
             </Header>
-            <Content>{contentRoutes[activekey]}</Content>
-            <Footer>
-              <h1>Footer</h1>
+            <Content className="Content-container">
+              {contentRoutes[activekey]}
+            </Content>
+            <Footer className="Footer-container">
+              <FooterSection />
             </Footer>
           </Layout>
         </Layout>

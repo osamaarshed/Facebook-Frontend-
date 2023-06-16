@@ -13,8 +13,8 @@ const SearchFriends = ({ socket }) => {
 
   useEffect(() => {
     socket.on("recieve_message", (data) => {
-      console.log("data recieved", data);
-      setMessages((e) => [...e, data]);
+      // console.log("data recieved", data);
+      // setMessages((e) => [...e, data]);
     });
   }, [socket]);
 
@@ -60,12 +60,14 @@ const SearchFriends = ({ socket }) => {
       time: time,
     };
     await socket.emit("send_message", payload);
-    setMessages((e) => [...e, payload]);
+    // setMessages((e) => [...e, payload]);
+    // setMessages([...messages,])
+    // setMessages([...messages, { sentBy: senderName, text: inputData }]);
   };
   const recieveMessage = () => {
     socket.on("recieve_message", (data) => {
-      console.log("data recieved", data);
-      setMessages(data.messages);
+      // console.log("data recieved", data);
+      // setMessages(data.messages);
     });
   };
   useEffect(() => {

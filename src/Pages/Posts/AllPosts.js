@@ -5,10 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllPostsData } from "../../ReduxToolkit/store/PostSlices/AllPostsSlice";
 import { Spin } from "antd";
 
-
 const AllPosts = () => {
   const dispatch = useDispatch();
-  
 
   const showAllPosts = () => {
     dispatch(fetchAllPostsData());
@@ -29,11 +27,7 @@ const AllPosts = () => {
         </>
       ) : (
         <>
-          <div
-            style={{
-              backgroundColor: "#f0f0f0",
-            }}
-          >
+          <div>
             {data?.value?.map((object, i) => {
               return (
                 <Row key={i}>

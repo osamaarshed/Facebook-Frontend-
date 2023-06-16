@@ -328,12 +328,13 @@ export const handleRequest = async (status, friendId) => {
 };
 
 //Show Messages
-export const showMessages = async () => {
+export const showMessages = async (page) => {
+  const limit = page || 0;
   // console.log("idhr", payload);
   try {
     const messages = await axios({
       method: "GET",
-      url: `${process.env.REACT_APP_API}messages/`,
+      url: `${process.env.REACT_APP_API}messages/?page=${page}`,
       headers: { Authorization: `Bearer ${token}` },
     });
     // console.log("Messages: ", messages.data.chats);

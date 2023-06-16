@@ -8,6 +8,8 @@ import { showFriendsSlice } from "./friendsSlices/ShowFriendsSlice";
 import { friendRequestsSlice } from "./friendsSlices/FriendRequestsSlice";
 import { likeCountSlice } from "./PostSlices/LikeSlice";
 import { showMessageSlice } from "./messagesSlices/showMessageSlice";
+import { AllMessages } from "./messagesSlices/AllMessagesSlice";
+import { setPageSlice } from "./messagesSlices/SetPageSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +22,8 @@ const store = configureStore({
     friends: showFriendsSlice.reducer,
     friendRequests: friendRequestsSlice.reducer,
     messages: showMessageSlice.reducer,
+    allmessages: AllMessages.reducer,
+    setpages: setPageSlice.reducer,
   },
 });
 

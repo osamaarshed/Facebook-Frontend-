@@ -17,7 +17,8 @@ const Test = () => {
               : "translate3d(0px,0vh,0px) scale3d(1, 1, 1)",
           transformStyle: "preserve-3d",
           opacity:
-            scrollYProgress > 0 ? 1 - scrollYProgress : 1 - scrollYProgress,
+            // scrollYProgress > 0 ? 1 - scrollYProgress : 1 - scrollYProgress,
+            1 - scrollYProgress,
         },
         reverse: true,
       });
@@ -29,7 +30,8 @@ const Test = () => {
         scrollYProgress > 0
           ? "translate3d(0px,0vh,0px) scale3d(1, 1, 1)"
           : "translate3d(0px,0vh,0px) scale3d(1, 1, 1)",
-      opacity: scrollYProgress > 0 ? 1 - scrollYProgress : 1 - scrollYProgress,
+      // opacity: scrollYProgress > 0 ? 1 - scrollYProgress : 1 - scrollYProgress,
+      opacity: 1 - scrollYProgress,
     },
   }));
 

@@ -119,8 +119,8 @@ const PostCard = (props) => {
                     <b> {object.userId.name} :</b> " {object.comment} "
                   </Col>
                   <Col span={4} offset={6}>
-                    <Buttons
-                      title={<DeleteOutlined />}
+                    <DeleteOutlined
+                    className="postCard-comment-delete"
                       onClick={async () => {
                         const res = await handleCommentDelete(object.postId);
                         if (res) {
@@ -128,6 +128,15 @@ const PostCard = (props) => {
                         }
                       }}
                     />
+                    {/* <Buttons
+                      title={<DeleteOutlined />}
+                      onClick={async () => {
+                        const res = await handleCommentDelete(object.postId);
+                        if (res) {
+                          setCommentRender(!commentRender);
+                        }
+                      }}
+                    /> */}
                   </Col>
                 </Row>
               );
