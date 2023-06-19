@@ -4,11 +4,11 @@ import axios from "axios";
 const token = localStorage.getItem("jwt");
 
 //Show All Posts
-export const getAllPosts = async () => {
+export const getAllPosts = async (page) => {
   try {
     const posts = await axios({
       method: "get",
-      url: `${process.env.REACT_APP_API}posts/all`,
+      url: `${process.env.REACT_APP_API}posts/all/?page=${page}`,
       headers: { Authorization: `Bearer ${token}` },
     });
     return posts.data;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PostCard from "../../Components/PostCard";
 import { Col, Row } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,18 +6,35 @@ import { fetchAllPostsData } from "../../ReduxToolkit/store/PostSlices/AllPostsS
 import { Spin } from "antd";
 
 const AllPosts = () => {
+  const [page, setPage] = useState(0);
   const dispatch = useDispatch();
-
   const showAllPosts = () => {
-    dispatch(fetchAllPostsData());
+    dispatch(fetchAllPostsData(page));
   };
-
   const data = useSelector((state) => {
     return state.post;
   });
 
+  const handleInfiniteScroll = () => {
+    // console.log("Scroll Top: ", document.documentElement.scrollTop);
+    // console.log("Inner Height: ", window.innerHeight);
+    // console.log("Scroll Height: ", document.documentElement.scrollHeight);
+    if (
+      document.documentElement.scrollTop + window.innerHeight + 1 >=
+      document.documentElement.scrollHeight
+    ) {
+      setPage(page + 1);
+    }
+  };
+
   useEffect(() => {
     showAllPosts();
+  }, [page]);
+  useEffect(() => {
+    window.addEventListener("scroll", handleInfiniteScroll);
+    return () => {
+      window.removeEventListener("scroll", handleInfiniteScroll);
+    };
   }, []);
   return (
     <>
@@ -27,7 +44,8 @@ const AllPosts = () => {
         </>
       ) : (
         <>
-          <div>
+          {console.log("Page: ", page)}
+          <div id="allposts" className="allPost-container">
             {data?.value?.map((object, i) => {
               return (
                 <Row key={i}>
@@ -39,7 +57,7 @@ const AllPosts = () => {
                         postId={object._id}
                         likeCount={object.likesCount}
                         cardDescription={object.postDescription}
-                        cardTitle={object.userId.name}
+                        cardTitle={object.userId?.name}
                       />
                     </div>
                   </Col>

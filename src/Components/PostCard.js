@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Card, Input, Space, Form } from "antd";
-import { Modal, message, Col, Row } from "antd";
+import {
+  Avatar,
+  Modal,
+  message,
+  Col,
+  Row,
+  List,
+  Card,
+  Input,
+  Space,
+  Form,
+} from "antd";
 import Buttons from "./Buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { renderPost } from "../ReduxToolkit/store/PostSlices/RenderPostsSlice";
@@ -12,6 +22,7 @@ import {
   LikeTwoTone,
   DeleteOutlined,
   EditOutlined,
+  SendOutlined,
 } from "@ant-design/icons";
 import {
   handleCommentSubmit,
@@ -19,10 +30,12 @@ import {
   handleDelete,
   handleUpdate,
 } from "../Api";
+import { animated, useSpring } from "@react-spring/web";
 import { likePostUpdate } from "../ReduxToolkit/store/PostSlices/AllPostsSlice";
 import { likeMyPostUpdate } from "../ReduxToolkit/store/PostSlices/MyPostsSlice";
 
 const { Meta } = Card;
+const { TextArea } = Input;
 
 const PostCard = (props) => {
   const [form] = Form.useForm();
@@ -30,6 +43,15 @@ const PostCard = (props) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [commentRender, setCommentRender] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  const animation = useSpring({
+    from: {
+      y: -100,
+    },
+    to: {
+      y: showComments ? 0 : -100,
+    },
+  });
 
   const dispatch = useDispatch();
 
@@ -103,73 +125,6 @@ const PostCard = (props) => {
   return (
     <div className="postCard-container">
       <Modal
-        className="postCard-modal"
-        centered={true}
-        title="Comments"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <div className="postCard-comment-modal-div">
-          <div className="postCard-comments">
-            {commentData?.map((object, i) => {
-              return (
-                <Row key={i}>
-                  <Col span={12}>
-                    <b> {object.userId.name} :</b> " {object.comment} "
-                  </Col>
-                  <Col span={4} offset={6}>
-                    <DeleteOutlined
-                    className="postCard-comment-delete"
-                      onClick={async () => {
-                        const res = await handleCommentDelete(object.postId);
-                        if (res) {
-                          setCommentRender(!commentRender);
-                        }
-                      }}
-                    />
-                    {/* <Buttons
-                      title={<DeleteOutlined />}
-                      onClick={async () => {
-                        const res = await handleCommentDelete(object.postId);
-                        if (res) {
-                          setCommentRender(!commentRender);
-                        }
-                      }}
-                    /> */}
-                  </Col>
-                </Row>
-              );
-            })}
-          </div>
-          <Space.Compact className="postCard-comment-modal-space">
-            <Form
-              name="control-hooks"
-              onFinish={handleCommentSubmitFinish}
-              form={form}
-              style={{
-                maxWidth: 600,
-              }}
-            >
-              <Form.Item
-                name="comment"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
-                <Input placeholder="Add Comment" />
-              </Form.Item>
-              <Form.Item>
-                <Buttons type="primary" htmlType="submit" title="Submit" />
-              </Form.Item>
-            </Form>
-          </Space.Compact>
-        </div>
-      </Modal>
-
-      <Modal
         title="Edit Post"
         open={isEditModalOpen}
         onOk={handleOk}
@@ -206,16 +161,12 @@ const PostCard = (props) => {
       </Modal>
 
       <Card
+        className="postCard-card"
         cover={
           <img
             alt="example"
             src={`${process.env.REACT_APP_API}public/images/${props.inputFile}`}
-            style={{
-              margin: "5%",
-              objectFit: "cover",
-              width: 600,
-              height: 400,
-            }}
+            className="postCard-img"
           />
         }
         actions={[
@@ -244,9 +195,9 @@ const PostCard = (props) => {
             key="comment"
             id={props.postId}
             onClick={() => {
-              setIsModalOpen(true);
+              // setIsModalOpen(true);
               getCommentsData();
-              // handleModal();
+              setShowComments(!showComments);
             }}
           />,
           <ShareAltOutlined key="share" />,
@@ -274,6 +225,68 @@ const PostCard = (props) => {
           description={props.cardDescription}
         />
       </Card>
+      {showComments ? (
+        <animated.div
+          style={animation}
+          className="postCard-showComments-container"
+        >
+          {/* <Space.Compact> */}
+          <Form
+            className="postCard-comment-modal-form"
+            name="control-hooks"
+            onFinish={handleCommentSubmitFinish}
+            form={form}
+          >
+            <Form.Item
+              className="postCard-formItem-textArea"
+              name="comment"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <TextArea rows={4} placeholder="Add Comment..." />
+            </Form.Item>
+            <Form.Item className="postCard-formItem-sendButton">
+              <Buttons
+                type="primary"
+                htmlType="submit"
+                title={<SendOutlined />}
+              />
+            </Form.Item>
+          </Form>
+          {/* </Space.Compact> */}
+
+          <List
+            className="postCard-commentsListContainer"
+            itemLayout="horizontal"
+          >
+            {commentData?.map((object, i) => {
+              return (
+                <List.Item key={i}>
+                  <List.Item.Meta
+                    className="postCard-commentsListItem"
+                    title={object.userId.name}
+                    description={object.comment}
+                  />
+                  <DeleteOutlined
+                    className="postCard-comment-delete"
+                    onClick={async () => {
+                      const res = await handleCommentDelete(object.postId);
+                      if (res) {
+                        setCommentRender(!commentRender);
+                      }
+                    }}
+                  />
+                </List.Item>
+              );
+            })}
+          </List>
+        </animated.div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

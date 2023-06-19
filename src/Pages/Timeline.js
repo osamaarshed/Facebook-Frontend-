@@ -63,7 +63,13 @@ const Timeline = () => {
               />
             </Sider>
           </animated.div>
-          <Layout>
+          <Layout
+            className={
+              activekey === "messages"
+                ? "timeline-content-layout-messages"
+                : "timeline-content-layout"
+            }
+          >
             <Header>
               <Navbar
                 setActiveKey={(e) => setActiveKey(e)}
@@ -75,9 +81,13 @@ const Timeline = () => {
             <Content className="Content-container">
               {contentRoutes[activekey]}
             </Content>
-            <Footer className="Footer-container">
-              <FooterSection />
-            </Footer>
+            {activekey === "messages" ? (
+              ""
+            ) : (
+              <Footer className="Footer-container">
+                <FooterSection />
+              </Footer>
+            )}
           </Layout>
         </Layout>
       </Space>

@@ -6,7 +6,7 @@ import jwt_decode from "jwt-decode";
 const { Search } = Input;
 
 const SearchFriends = ({ socket }) => {
-  const [response, setResponse] = useState();
+  const [response, setResponse] = useState([]);
   const [modal2Open, setModal2Open] = useState(false);
   const [inputData, setInputData] = useState("");
   const [messages, setMessages] = useState([]);
@@ -59,15 +59,16 @@ const SearchFriends = ({ socket }) => {
       text: text,
       time: time,
     };
-    await socket.emit("send_message", payload);
+    await socket.emit("send_new_message", payload);
+    setMessages([...messages, { text: inputData }]);
     // setMessages((e) => [...e, payload]);
     // setMessages([...messages,])
     // setMessages([...messages, { sentBy: senderName, text: inputData }]);
   };
   const recieveMessage = () => {
-    socket.on("recieve_message", (data) => {
-      // console.log("data recieved", data);
-      // setMessages(data.messages);
+    socket.on("recieve_new_message", (data) => {
+      console.log("Recieved Data on Search Friends: ", data);
+      setMessages(data.messages ? data.messages : []);
     });
   };
   useEffect(() => {
@@ -82,29 +83,32 @@ const SearchFriends = ({ socket }) => {
         enterButton
       />
       <div>
-        {response?.map((object, i) => {
-          return (
-            <React.Fragment key={i}>
-              <div>
-                <Card
-                  className="searchFriend-card"
-                  type="inner"
-                  title={object.name}
-                  extra={
-                    <Button
-                      onClick={() => {
-                        setModal2Open(true);
-                      }}
-                      type="primary"
-                    >
-                      Click to Start Chat
-                    </Button>
-                  }
-                ></Card>
-              </div>
-            </React.Fragment>
-          );
-        })}
+        {response.length
+          ? response?.map((object, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <div>
+                    <Card
+                      className="searchFriend-card"
+                      type="inner"
+                      title={object.name}
+                      extra={
+                        <Button
+                          onClick={() => {
+                            setModal2Open(true);
+                          }}
+                          type="primary"
+                        >
+                          Click to Start Chat
+                        </Button>
+                      }
+                    ></Card>
+                  </div>
+                </React.Fragment>
+              );
+            })
+          : ""}
+
         <Modal
           title="Chat"
           centered

@@ -22,10 +22,6 @@ const MessagesSider = ({ socket }) => {
   const senderName = messagesData.senderName;
   const participant2 = messagesData.participant2;
 
-  const page = useSelector((state) => {
-    return state.setpages.value;
-  });
-
   const onFinish = () => {
     sendMessage();
   };
@@ -43,7 +39,6 @@ const MessagesSider = ({ socket }) => {
         new Date(Date.now()).getMinutes(),
     };
     await socket.emit("send_message", payload);
-    // setMessage([...message, { sentBy: senderName, text: inputData }]);
     setMessage([...message, { sentBy: senderName, text: inputData }]);
     setFirstMessageSend(true);
     form.resetFields();
@@ -51,53 +46,54 @@ const MessagesSider = ({ socket }) => {
 
   const recieveMessage = () => {
     socket.on("recieve_message", (data) => {
-      console.log("data message: ", data);
+      console.log("Recieved Data on Message Sider: ", data);
       setMessage(data.messages);
     });
   };
   console.log("message hook: ", message);
   useEffect(() => {
     recieveMessage();
-    // scrollToBottom();
   }, []);
   return (
     <>
-      <ChatBox
-        socket={socket}
-        decodedToken={decodedToken}
-        message={message}
-        msg={msg}
-        firstMessageSend={firstMessageSend}
-      />
-      <div className="chats-modalChatFooter">
-        <Form className="chats-message-form" form={form} onFinish={onFinish}>
-          <Form.Item
-            name="message"
-            rules={[
-              {
-                message: "Message...",
-                required: true,
-              },
-            ]}
-          >
-            <Input
-              placeholder="Message..."
-              onChange={(e) => {
-                setInputData(e.target.value);
-              }}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              className="chats-form-button"
-              type="primary"
-              shape="circle"
-              htmlType="submit"
+      <div className="messagesSider-container">
+        <ChatBox
+          socket={socket}
+          decodedToken={decodedToken}
+          message={message}
+          msg={msg}
+          firstMessageSend={firstMessageSend}
+        />
+        <div className="chats-modalChatFooter">
+          <Form className="chats-message-form" form={form} onFinish={onFinish}>
+            <Form.Item
+              name="message"
+              rules={[
+                {
+                  message: "Message...",
+                  required: true,
+                },
+              ]}
             >
-              <SendOutlined />
-            </Button>
-          </Form.Item>
-        </Form>
+              <Input
+                placeholder="Message..."
+                onChange={(e) => {
+                  setInputData(e.target.value);
+                }}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                className="chats-form-button"
+                type="primary"
+                shape="circle"
+                htmlType="submit"
+              >
+                <SendOutlined />
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
     </>
   );

@@ -4,8 +4,8 @@ import { getAllPosts, likePost } from "../../../Api";
 
 export const fetchAllPostsData = createAsyncThunk(
   "posts/fetchAllPostsData",
-  async () => {
-    const res = await getAllPosts();
+  async (page) => {
+    const res = await getAllPosts(page);
     return res;
   }
 );
@@ -22,7 +22,7 @@ const postSlice = createSlice({
   name: "post",
   initialState: {
     isLoading: false,
-    value: null,
+    value: [],
     error: false,
   },
   extraReducers: {
@@ -30,7 +30,20 @@ const postSlice = createSlice({
       state.isLoading = true;
     },
     [fetchAllPostsData.fulfilled]: (state, action) => {
-      state.value = action.payload;
+      console.log("Action Payload: ", action.payload);
+      if (state.value?.length && action.payload) {
+        state.value = [...state.value, ...action.payload];
+        console.log("State Value of All Posts", state.value);
+      } else if (!action.payload) {
+        state.value = [...state.value];
+      }
+      // else if (action.payload?.length) {
+      //   state.value = [...state.value];
+      // }
+      else {
+        state.value = action.payload;
+        console.log("State.value in else: ", state.value);
+      }
       state.isLoading = false;
     },
     [fetchAllPostsData.rejected]: (state) => {

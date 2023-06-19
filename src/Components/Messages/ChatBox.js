@@ -29,53 +29,51 @@ const ChatBox = ({ decodedToken, message, msg, firstMessageSend }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
   return (
-    <div className="chatBox-container">
-      <div
-        onScroll={() => {
-          handleInfiniteScroll();
-        }}
-        id="chatBox"
-        className="chats-modalChatBody"
-      >
-        {firstMessageSend
-          ? message?.map((msg, i) => {
-              return (
-                <React.Fragment key={i}>
-                  <div
-                    id={msg.sentBy?._id === decodedToken._id ? "me" : "other"}
-                  >
-                    <p className="Chats-msg-text">{msg.text}</p>
-                    <p>
-                      <span className="Chats-msg-senderName">
-                        Sent By: {msg.sentBy?.name}
-                      </span>
-                      <span className="Chats-msg-time">{msg.timeStamp}</span>
-                    </p>
-                  </div>
-                  <div ref={messagesEndRef} />
-                </React.Fragment>
-              );
-            })
-          : msg?.map((object, i) => {
-              return (
-                <React.Fragment key={i}>
-                  <div
-                    id={object.sentBy._id === decodedToken._id ? "me" : "other"}
-                  >
-                    <p className="Chats-msg-text">{object.text}</p>
-                    <p>
-                      <span className="Chats-msg-senderName">
-                        Sent By: {object.sentBy.name}
-                      </span>
-                      <span className="Chats-msg-time">{object.timeStamp}</span>
-                    </p>
-                  </div>
-                  <div ref={messagesEndRef} />
-                </React.Fragment>
-              );
-            })}
-      </div>
+    // <div className="chatBox-container">
+    <div
+      onScroll={() => {
+        handleInfiniteScroll();
+      }}
+      id="chatBox"
+      className="chats-modalChatBody"
+    >
+      {firstMessageSend
+        ? message?.map((msg, i) => {
+            return (
+              <React.Fragment key={i}>
+                <div id={msg.sentBy?._id === decodedToken._id ? "me" : "other"}>
+                  <p className="Chats-msg-text">{msg.text}</p>
+                  <p>
+                    <span className="Chats-msg-senderName">
+                      Sent By: {msg.sentBy?.name}
+                    </span>
+                    <span className="Chats-msg-time">{msg.timeStamp}</span>
+                  </p>
+                </div>
+                <div ref={messagesEndRef} />
+              </React.Fragment>
+            );
+          })
+        : msg?.map((object, i) => {
+            return (
+              <React.Fragment key={i}>
+                <div
+                  id={object.sentBy._id === decodedToken._id ? "me" : "other"}
+                >
+                  <p className="Chats-msg-text">{object.text}</p>
+                  <p>
+                    <span className="Chats-msg-senderName">
+                      Sent By: {object.sentBy.name}
+                    </span>
+                    <span className="Chats-msg-time">{object.timeStamp}</span>
+                  </p>
+                </div>
+                <div ref={messagesEndRef} />
+              </React.Fragment>
+            );
+          })}
     </div>
+    // </div>
   );
 };
 

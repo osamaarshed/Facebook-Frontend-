@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Divider } from "antd";
 import { List, Spin } from "antd";
 import jwt_decode from "jwt-decode";
 import { updateValues } from "../../ReduxToolkit/store/messagesSlices/AllMessagesSlice";
@@ -24,6 +25,11 @@ const AllChats = ({ socket, messages }) => {
   const joinRoom = (payload) => {
     socket.emit("join_room", payload);
   };
+  useEffect(() => {
+    return () => {
+      dispatch(updateValues(null));
+    };
+  }, []);
 
   return (
     <div>
@@ -59,6 +65,7 @@ const AllChats = ({ socket, messages }) => {
                   }}
                 >
                   {i + 1}
+                  <Divider type="vertical" />
                   <List.Item.Meta
                     className="allchats-listitemMeta"
                     title={recieverName}
