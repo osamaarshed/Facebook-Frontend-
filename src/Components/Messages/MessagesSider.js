@@ -3,24 +3,35 @@ import { Button, Input, Form } from "antd";
 import { useSelector } from "react-redux";
 import { SendOutlined } from "@ant-design/icons";
 import jwt_decode from "jwt-decode";
-import ChatBox from "./Messages/ChatBox";
+import ChatBox from "./ChatBox";
 
 const MessagesSider = ({ socket }) => {
   const [inputData, setInputData] = useState("");
   const [firstMessageSend, setFirstMessageSend] = useState(false);
   const [message, setMessage] = useState([]);
+
   const token = localStorage.getItem("jwt");
   const [form] = Form.useForm();
   const decodedToken = jwt_decode(token);
+  let senderName = "";
+  let recieverName = "";
+  let participant2 = "";
 
-  const messagesData = useSelector((state) => {
-    return state.allmessages.value;
+  const [specificMessages] = useSelector((state) => {
+    return state.specificMessages.value;
   });
-
-  const room = messagesData.room;
-  const msg = messagesData.msg;
-  const senderName = messagesData.senderName;
-  const participant2 = messagesData.participant2;
+  if (specificMessages) {
+    specificMessages.participants.forEach((user) => {
+      if (user._id !== decodedToken._id) {
+        participant2 = user._id;
+        recieverName = user.name;
+      } else if (user._id === decodedToken._id) {
+        senderName = user.name;
+      }
+    });
+  }
+  const room = specificMessages?.chatRoomId;
+  const msg = specificMessages?.messages;
 
   const onFinish = () => {
     sendMessage();
@@ -50,10 +61,10 @@ const MessagesSider = ({ socket }) => {
       setMessage(data.messages);
     });
   };
-  console.log("message hook: ", message);
   useEffect(() => {
     recieveMessage();
   }, []);
+
   return (
     <>
       <div className="messagesSider-container">

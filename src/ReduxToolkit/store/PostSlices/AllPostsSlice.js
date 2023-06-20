@@ -30,19 +30,12 @@ const postSlice = createSlice({
       state.isLoading = true;
     },
     [fetchAllPostsData.fulfilled]: (state, action) => {
-      console.log("Action Payload: ", action.payload);
       if (state.value?.length && action.payload) {
         state.value = [...state.value, ...action.payload];
-        console.log("State Value of All Posts", state.value);
       } else if (!action.payload) {
         state.value = [...state.value];
-      }
-      // else if (action.payload?.length) {
-      //   state.value = [...state.value];
-      // }
-      else {
+      } else {
         state.value = action.payload;
-        console.log("State.value in else: ", state.value);
       }
       state.isLoading = false;
     },

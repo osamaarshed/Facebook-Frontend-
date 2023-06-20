@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Divider } from "antd";
 import { List, Spin } from "antd";
 import jwt_decode from "jwt-decode";
-import { updateValues } from "../../ReduxToolkit/store/messagesSlices/AllMessagesSlice";
+import { setSelectedId } from "../../ReduxToolkit/store/messagesSlices/selectedIdSlice";
 
 const AllChats = ({ socket, messages }) => {
   const token = localStorage.getItem("jwt");
@@ -13,23 +13,9 @@ const AllChats = ({ socket, messages }) => {
   let recieverName = "";
   let id = "";
 
-  const setStates = (room, msg, senderName, participant2) => {
-    const payload = {
-      room: room,
-      msg: msg,
-      senderName: senderName,
-      participant2: participant2,
-    };
-    dispatch(updateValues(payload));
-  };
   const joinRoom = (payload) => {
     socket.emit("join_room", payload);
   };
-  useEffect(() => {
-    return () => {
-      dispatch(updateValues(null));
-    };
-  }, []);
 
   return (
     <div>
@@ -56,12 +42,7 @@ const AllChats = ({ socket, messages }) => {
                   className="AllChats-listItem"
                   onClick={() => {
                     joinRoom(item.chatRoomId);
-                    setStates(
-                      item.chatRoomId,
-                      item.messages,
-                      item.senderName,
-                      id
-                    );
+                    dispatch(setSelectedId(item.chatRoomId));
                   }}
                 >
                   {i + 1}
@@ -69,7 +50,9 @@ const AllChats = ({ socket, messages }) => {
                   <List.Item.Meta
                     className="allchats-listitemMeta"
                     title={recieverName}
-                    description={item.messages[item.messages.length - 1].text}
+                    description={`Last Message: ${
+                      item.messages[item.messages.length - 1].text
+                    }`}
                   />
                 </List.Item>
               </div>

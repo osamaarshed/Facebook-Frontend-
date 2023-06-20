@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input, message, Card, Button, Modal } from "antd";
 import { SendOutlined } from "@ant-design/icons";
-import { findFriends } from "../Api";
+import { findFriends } from "../../Api";
 import jwt_decode from "jwt-decode";
 const { Search } = Input;
 

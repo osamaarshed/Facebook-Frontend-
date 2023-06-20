@@ -16,9 +16,6 @@ const AllPosts = () => {
   });
 
   const handleInfiniteScroll = () => {
-    // console.log("Scroll Top: ", document.documentElement.scrollTop);
-    // console.log("Inner Height: ", window.innerHeight);
-    // console.log("Scroll Height: ", document.documentElement.scrollHeight);
     if (
       document.documentElement.scrollTop + window.innerHeight + 1 >=
       document.documentElement.scrollHeight
@@ -44,7 +41,6 @@ const AllPosts = () => {
         </>
       ) : (
         <>
-          {console.log("Page: ", page)}
           <div id="allposts" className="allPost-container">
             {data?.value?.map((object, i) => {
               return (

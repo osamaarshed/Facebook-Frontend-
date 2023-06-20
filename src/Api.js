@@ -328,16 +328,31 @@ export const handleRequest = async (status, friendId) => {
 };
 
 //Show Messages
-export const showMessages = async (page) => {
-  const limit = page || 0;
+export const showMessages = async () => {
+  // const limit = page || 0;
   // console.log("idhr", payload);
   try {
     const messages = await axios({
       method: "GET",
-      url: `${process.env.REACT_APP_API}messages/?page=${page}`,
+      url: `${process.env.REACT_APP_API}messages/`,
       headers: { Authorization: `Bearer ${token}` },
     });
     // console.log("Messages: ", messages.data.chats);
+    return messages.data.chats;
+  } catch (error) {
+    message.error(error.response.data.message);
+    console.log(error.response.data.message);
+  }
+};
+
+//show Specific Chat
+export const showSpecificChat = async (payload) => {
+  try {
+    const messages = await axios({
+      method: "GET",
+      url: `${process.env.REACT_APP_API}messages/${payload.selectedId}?page=${payload.page}`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return messages.data.chats;
   } catch (error) {
     message.error(error.response.data.message);
