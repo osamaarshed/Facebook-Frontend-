@@ -12,12 +12,14 @@ import { AllMessages } from "./messagesSlices/AllMessagesSlice";
 import { setPageSlice } from "./messagesSlices/SetPageSlice";
 import { showSpecificChatsSlice } from "./messagesSlices/showSpecifcChatsSlice";
 import { selectedIdSlice } from "./messagesSlices/selectedIdSlice";
+import { selectedPostSlice } from "./PostSlices/SelectedPostSlice";
 
 const store = configureStore({
   reducer: {
     post: postSlice.reducer,
     myposts: myPostsSlice.reducer,
     render: renderSlice.reducer,
+    selectedPost: selectedPostSlice.reducer,
     likeCount: likeCountSlice.reducer,
     comment: commentsSlice.reducer,
     commentRender: commentsRenderSlice.reducer,

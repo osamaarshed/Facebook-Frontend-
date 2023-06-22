@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Divider } from "antd";
 import { List, Spin } from "antd";
@@ -17,6 +17,9 @@ const AllChats = ({ socket, messages }) => {
     socket.emit("join_room", payload);
   };
 
+  useEffect(() => {
+    console.log("All Chats: ");
+  }, []);
   return (
     <div>
       {messages.isLoading ? (

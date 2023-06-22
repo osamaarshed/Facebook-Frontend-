@@ -20,7 +20,7 @@ const SignIn = () => {
       if (res.data.message === "Login Successful") {
         localStorage.setItem("jwt", res.data.jwt);
         message.success("Login Successful");
-        navigate("/");
+        navigate("/allposts");
       }
     } catch (err) {
       message.error(err.response.data.message);

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "../Css/Navbar.css";
 import { navItems } from "../constants";
 import { useNavigate } from "react-router-dom";
-import { CloseOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import { LeftOutlined, UnorderedListOutlined } from "@ant-design/icons";
 
 const { Header } = Layout;
 
@@ -13,7 +13,7 @@ const navStyle = {
   alignItems: "center",
 };
 
-const Navbar = ({ setActiveKey, setCollapsed, collapsed, activekey }) => {
+const Navbar = ({ setActiveKey, setCollapsed, collapsed }) => {
   const navigate = useNavigate();
 
   const toggleCollapsed = () => {
@@ -40,7 +40,7 @@ const Navbar = ({ setActiveKey, setCollapsed, collapsed, activekey }) => {
               toggleCollapsed();
             }}
           >
-            <CloseOutlined
+            <LeftOutlined
               style={{
                 color: "white",
               }}
@@ -62,22 +62,27 @@ const Navbar = ({ setActiveKey, setCollapsed, collapsed, activekey }) => {
         )}
 
         <Link to="/">
-          <h1 className="Navbar-header-h1">Facebook</h1>
+          <h1
+            className={
+              collapsed ? "Navbar-header-h1-collapsed" : "Navbar-header-h1"
+            }
+          >
+            Facebook
+          </h1>
         </Link>
         <div className="demo-logo" />
-
         <Menu
           className="Menu-Items"
-          onClick={({ key }) => {
-            setActiveKey(key);
-          }}
           theme="dark"
           style={{
             width: "100%",
           }}
           mode="horizontal"
           items={navItems}
-        ></Menu>
+          onSelect={({ key }) => {
+            setActiveKey(key);
+          }}
+        />
       </Header>
     </>
   );

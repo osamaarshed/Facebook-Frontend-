@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Form, Input, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import "./../../Css/CreatePosts.css";
@@ -48,8 +48,6 @@ const CreatePosts = () => {
           backgroundColor: "#f0f0f0",
         }}
       >
-        {/* <Navbar /> */}
-
         <h1>Create Posts</h1>
         <div className="CreatePosts-form">
           <Form

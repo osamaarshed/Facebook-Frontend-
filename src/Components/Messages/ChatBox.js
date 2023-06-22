@@ -1,6 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updatePage } from "../../ReduxToolkit/store/messagesSlices/SetPageSlice";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+
+const antIcon = (
+  <LoadingOutlined
+    style={{
+      fontSize: 24,
+    }}
+    spin
+  />
+);
 
 const ChatBox = ({ decodedToken, message, msg, firstMessageSend }) => {
   const messagesEndRef = useRef(null);
@@ -24,6 +35,9 @@ const ChatBox = ({ decodedToken, message, msg, firstMessageSend }) => {
     }, 100);
   }, [message, selectedId]);
 
+  useEffect(() => {
+    console.log("ChatBox: ");
+  }, []);
   return (
     <div
       onScroll={() => {
@@ -51,7 +65,7 @@ const ChatBox = ({ decodedToken, message, msg, firstMessageSend }) => {
         })
       ) : specificMessages.isLoading ? (
         <>
-          <h1>Loading...</h1>
+          <Spin indicator={antIcon} />
         </>
       ) : (
         msg?.map((object, i) => {

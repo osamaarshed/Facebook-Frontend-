@@ -1,16 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Avatar,
-  Modal,
-  message,
-  Col,
-  Row,
-  List,
-  Card,
-  Input,
-  Space,
-  Form,
-} from "antd";
+import { Avatar, message, List, Card, Input, Form } from "antd";
 import Buttons from "./Buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { renderPost } from "../ReduxToolkit/store/PostSlices/RenderPostsSlice";
@@ -24,23 +13,18 @@ import {
   EditOutlined,
   SendOutlined,
 } from "@ant-design/icons";
-import {
-  handleCommentSubmit,
-  handleCommentDelete,
-  handleDelete,
-  handleUpdate,
-} from "../Api";
+import { handleCommentSubmit, handleCommentDelete, handleDelete } from "../Api";
 import { animated, useSpring } from "@react-spring/web";
 import { likePostUpdate } from "../ReduxToolkit/store/PostSlices/AllPostsSlice";
 import { likeMyPostUpdate } from "../ReduxToolkit/store/PostSlices/MyPostsSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { selectedPost } from "../ReduxToolkit/store/PostSlices/SelectedPostSlice";
 
 const { Meta } = Card;
 const { TextArea } = Input;
 
 const PostCard = (props) => {
   const [form] = Form.useForm();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [commentRender, setCommentRender] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -59,14 +43,6 @@ const PostCard = (props) => {
     return state.comment.value;
   });
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-    setIsEditModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setIsEditModalOpen(false);
-  };
   const handleCommentSubmitFinish = async (values) => {
     await handleCommentSubmit(props.postId, values);
     setCommentRender(!commentRender);
@@ -106,12 +82,6 @@ const PostCard = (props) => {
       }
     }
   };
-  const handleUpdateValues = async (value) => {
-    await handleUpdate(props.postId, value);
-    form.resetFields();
-    // props?.setStateRender(!props?.render);
-    dispatch(renderPost());
-  };
   const getCommentsData = () => {
     // const res = await showComments(props.postId);
     dispatch(fetchCommentsData(props.postId));
@@ -124,42 +94,6 @@ const PostCard = (props) => {
 
   return (
     <div className="postCard-container">
-      <Modal
-        title="Edit Post"
-        open={isEditModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Space.Compact
-          style={{
-            width: "100%",
-          }}
-        >
-          <Form
-            name="control-hooks"
-            onFinish={handleUpdateValues}
-            form={form}
-            style={{
-              maxWidth: 600,
-            }}
-          >
-            <Form.Item
-              name="postDescription"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Input placeholder="Post Description" />
-            </Form.Item>
-            <Form.Item>
-              <Buttons type="primary" htmlType="submit" title="Submit" />
-            </Form.Item>
-          </Form>
-        </Space.Compact>
-      </Modal>
-
       <Card
         className="postCard-card"
         cover={
@@ -169,53 +103,91 @@ const PostCard = (props) => {
             className="postCard-img"
           />
         }
-        actions={[
-          <span key="span">
-            {isClicked ? (
-              <LikeTwoTone
-                key="likes"
-                id={props.postId}
-                onClick={() => {
-                  handleLike();
-                }}
-              />
-            ) : (
-              <LikeOutlined
-                key="unlike"
-                id={props.postId}
-                onClick={() => {
-                  handleLike();
-                }}
-              />
-            )}
+        actions={
+          props.component === "myposts"
+            ? [
+                <span key="span">
+                  {isClicked ? (
+                    <LikeTwoTone
+                      key="likes"
+                      id={props.postId}
+                      onClick={() => {
+                        handleLike();
+                      }}
+                    />
+                  ) : (
+                    <LikeOutlined
+                      key="unlike"
+                      id={props.postId}
+                      onClick={() => {
+                        handleLike();
+                      }}
+                    />
+                  )}
 
-            {props.likeCount}
-          </span>,
-          <CommentOutlined
-            key="comment"
-            id={props.postId}
-            onClick={() => {
-              // setIsModalOpen(true);
-              getCommentsData();
-              setShowComments(!showComments);
-            }}
-          />,
-          <ShareAltOutlined key="share" />,
+                  {props.likeCount}
+                </span>,
+                <CommentOutlined
+                  key="comment"
+                  id={props.postId}
+                  onClick={() => {
+                    // setIsModalOpen(true);
+                    getCommentsData();
+                    setShowComments(!showComments);
+                  }}
+                />,
+                <ShareAltOutlined key="share" />,
 
-          <DeleteOutlined
-            key="delete"
-            onClick={() => {
-              handleDelete(props.postId);
-              dispatch(renderPost());
-            }}
-          />,
-          <EditOutlined
-            key="edit"
-            onClick={() => {
-              setIsEditModalOpen(true);
-            }}
-          />,
-        ]}
+                <DeleteOutlined
+                  key="delete"
+                  onClick={() => {
+                    handleDelete(props.postId);
+                    dispatch(renderPost());
+                  }}
+                />,
+                <Link to="/editposts">
+                  <EditOutlined
+                    key="edit"
+                    onClick={() => {
+                      dispatch(selectedPost(props.postId));
+                    }}
+                  />
+                </Link>,
+              ]
+            : [
+                <span key="span">
+                  {isClicked ? (
+                    <LikeTwoTone
+                      key="likes"
+                      id={props.postId}
+                      onClick={() => {
+                        handleLike();
+                      }}
+                    />
+                  ) : (
+                    <LikeOutlined
+                      key="unlike"
+                      id={props.postId}
+                      onClick={() => {
+                        handleLike();
+                      }}
+                    />
+                  )}
+
+                  {props.likeCount}
+                </span>,
+                <CommentOutlined
+                  key="comment"
+                  id={props.postId}
+                  onClick={() => {
+                    // setIsModalOpen(true);
+                    getCommentsData();
+                    setShowComments(!showComments);
+                  }}
+                />,
+                <ShareAltOutlined key="share" />,
+              ]
+        }
       >
         <Meta
           avatar={

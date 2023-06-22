@@ -14,11 +14,67 @@ import UseTransition from "./Pages/Test/UseTransition";
 import UseSprings from "./Pages/Test/UseSprings";
 import UseTrail from "./Pages/Test/UseTrail";
 import Parallax from "./Pages/Test/Parallax";
+import EditPosts from "./Pages/Posts/EditPosts";
+import SigninAnimation from "./Pages/Test/SigninAnimation";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Timeline />,
+    children: [
+      {
+        path: "allposts",
+        element: <AllPosts />,
+      },
+      {
+        path: "myposts",
+        element: <MyPosts />,
+      },
+      {
+        path: "editposts",
+        element: <EditPosts />,
+      },
+      {
+        path: "createposts",
+        element: <CreatePosts />,
+      },
+      {
+        path: "messages",
+        element: <Messages />,
+      },
+      {
+        path: "friends",
+        element: <Friends />,
+      },
+      {
+        path: "friendRequests",
+        element: <FriendRequests />,
+      },
+      {
+        path: "test",
+        element: <Test />,
+      },
+      {
+        path: "signinAnimation",
+        element: <SigninAnimation />,
+      },
+      {
+        path: "usetransition",
+        element: <UseTransition />,
+      },
+      {
+        path: "usesprings",
+        element: <UseSprings />,
+      },
+      {
+        path: "usetrail",
+        element: <UseTrail />,
+      },
+      {
+        path: "parallax",
+        element: <Parallax />,
+      },
+    ],
   },
   {
     path: "/signup",
@@ -27,50 +83,6 @@ const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignIn />,
-  },
-  {
-    path: "/allposts",
-    element: <AllPosts />,
-  },
-  {
-    path: "/myposts",
-    element: <MyPosts />,
-  },
-  {
-    path: "/createposts",
-    element: <CreatePosts />,
-  },
-  {
-    path: "/messages",
-    element: <Messages />,
-  },
-  {
-    path: "/friends",
-    element: <Friends />,
-  },
-  {
-    path: "/friendRequests",
-    element: <FriendRequests />,
-  },
-  {
-    path: "/test",
-    element: <Test />,
-  },
-  {
-    path: "/usetransition",
-    element: <UseTransition />,
-  },
-  {
-    path: "/usesprings",
-    element: <UseSprings />,
-  },
-  {
-    path: "/usetrail",
-    element: <UseTrail />,
-  },
-  {
-    path: "/parallax",
-    element: <Parallax />,
   },
 ]);
 

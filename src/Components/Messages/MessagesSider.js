@@ -63,6 +63,7 @@ const MessagesSider = ({ socket }) => {
   };
   useEffect(() => {
     recieveMessage();
+    console.log("MessagesSider: ");
   }, []);
 
   return (

@@ -8,9 +8,12 @@
   color: white;
   margin-left: 50%;
 }
+.Navbar-header-h1-collapsed {
+  color: white;
+  margin-left: 100%;
+}
 .navbar-menu {
   width: 100%;
   color: white;
   background-color: rgba(0, 21, 41, 255);
 }
-

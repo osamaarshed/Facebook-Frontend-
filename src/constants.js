@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import FriendRequests from "./Pages/Friends/FriendRequests";
 import Friends from "./Pages/Friends/Friends";
 import Messages from "./Pages/Messages/Messages";
@@ -16,35 +17,57 @@ export const navItems = [
     key: "sub1",
     children: [
       {
-        label: "All Posts",
+        label: <Link to="allposts">All Posts</Link>,
         key: "allposts",
       },
       {
-        label: "My Posts",
+        label: <Link to="myposts">My Posts</Link>,
         key: "myposts",
       },
     ],
   },
   {
-    label: "Create Posts",
+    label: <Link to="createposts">Create Posts</Link>,
     key: "createposts",
   },
   {
-    label: "Messages",
+    label: <Link to="messages">Messages</Link>,
     key: "messages",
   },
   {
-    label: "Friends",
+    label: <Link to="friends">Friends</Link>,
     key: "friends",
   },
   {
-    label: "Friend Requests",
+    label: <Link to="friendRequests">Friend Requests</Link>,
     key: "friendRequests",
   },
 
   {
-    label: "Test",
-    key: "test",
+    label: "Animations",
+    key: "animations",
+    children: [
+      {
+        label: <Link to="test">useScroll Hook</Link>,
+        key: "test",
+      },
+      {
+        label: <Link to="usetransition">useTransition Hook</Link>,
+        key: "usetransition",
+      },
+      {
+        label: <Link to="usesprings">useSprings Hook</Link>,
+        key: "usesprings",
+      },
+      {
+        label: <Link to="usetrail">useTrail Hook</Link>,
+        key: "usetrail",
+      },
+      {
+        label: <Link to="parallax">Parallax</Link>,
+        key: "parallax",
+      },
+    ],
   },
   {
     label: "Logout",
@@ -61,53 +84,53 @@ export const sideNavItems = [
     key: "sub1",
     children: [
       {
-        label: "All Posts",
+        label: <Link to="allposts">All Posts</Link>,
         key: "allposts",
       },
       {
-        label: "My Posts",
+        label: <Link to="myposts">My Posts</Link>,
         key: "myposts",
       },
     ],
   },
   {
-    label: "Create Posts",
+    label: <Link to="createposts">Create Posts</Link>,
     key: "createposts",
   },
   {
-    label: "Messages",
+    label: <Link to="messages">Messages</Link>,
     key: "messages",
   },
   {
-    label: "Friends",
+    label: <Link to="friends">Friends</Link>,
     key: "friends",
   },
   {
-    label: "Friend Requests",
+    label: <Link to="friendRequests">Friend Requests</Link>,
     key: "friendRequests",
   },
   {
     label: "Animations",
-    key: "sub2",
+    key: "animations",
     children: [
       {
-        label: "useScroll Hook",
+        label: <Link to="test">useScroll Hook</Link>,
         key: "test",
       },
       {
-        label: "useTransition Hook",
+        label: <Link to="usetransition">useTransition Hook</Link>,
         key: "usetransition",
       },
       {
-        label: "useSprings Hook",
+        label: <Link to="usesprings">useSprings Hook</Link>,
         key: "usesprings",
       },
       {
-        label: "useTrail Hook",
+        label: <Link to="usetrail">useTrail Hook</Link>,
         key: "usetrail",
       },
       {
-        label: "Parallax",
+        label: <Link to="parallax">Parallax</Link>,
         key: "parallax",
       },
     ],

@@ -36,6 +36,7 @@ const Messages = () => {
 
   useEffect(() => {
     dispatch(fetchAllMessages());
+    console.log("Messages: ");
   }, []);
 
   useEffect(() => {

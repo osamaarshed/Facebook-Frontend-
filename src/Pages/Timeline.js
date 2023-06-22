@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Layout, Menu, Space } from "antd";
 import Navbar from "../Components/Navbar";
-import { contentRoutes } from "../constants";
 import { useSpring, animated } from "@react-spring/web";
 import { sideNavItems } from "../constants";
 import FooterSection from "../Components/FooterSection";
+import { Outlet } from "react-router-dom";
 const { Header, Content, Sider, Footer } = Layout;
 
 const Timeline = () => {
-  const [activekey, setActiveKey] = useState("allposts");
+  const [activekey, setActiveKey] = useState();
   const [collapsed, setCollapsed] = useState(false);
 
   const navAnimation = useSpring({
@@ -55,7 +55,7 @@ const Timeline = () => {
             >
               <Menu
                 className="navbar-menu"
-                onClick={({ key }) => {
+                onSelect={({ key }) => {
                   setActiveKey(key);
                 }}
                 defaultSelectedKeys={["1"]}
@@ -64,11 +64,11 @@ const Timeline = () => {
             </Sider>
           </animated.div>
           <Layout
-            className={
-              activekey === "messages"
-                ? "timeline-content-layout-messages"
-                : "timeline-content-layout"
-            }
+          // className={
+          //   activekey === "messages"
+          //     ? "timeline-content-layout-messages"
+          //     : "timeline-content-layout"
+          // }
           >
             <Header>
               <Navbar
@@ -78,8 +78,10 @@ const Timeline = () => {
                 collapsed={collapsed}
               />
             </Header>
+
             <Content className="Content-container">
-              {contentRoutes[activekey]}
+              {/* {contentRoutes[activekey]} */}
+              <Outlet />
             </Content>
             {activekey === "messages" ? (
               ""

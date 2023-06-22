@@ -315,3 +315,16 @@ code {
 .allPost-container {
   overflow: auto;
 }
+.editPosts-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+.editPosts-form {
+  border: 1px solid;
+  padding: 5%;
+}
+.signinAnimation-animation {
+  height: auto;
+}

@@ -217,24 +217,24 @@ export const handleDelete = async (postId) => {
 };
 
 //Update Post
-export const handleUpdate = async (postId, value) => {
-  const payload = {
-    postId: postId,
-    postDescription: value.postDescription,
-  };
-  await axios({
-    method: "put",
-    url: `${process.env.REACT_APP_API}posts/`,
-    headers: { Authorization: `Bearer ${token}` },
-    data: payload,
-  })
-    .then((res) => {
-      message.success("Updated");
-      console.log(res.data);
-    })
-    .catch((err) => {
-      message.error(err.response.data.message);
+export const handleUpdate = async (data) => {
+  try {
+    const res = await axios({
+      method: "put",
+      url: `${process.env.REACT_APP_API}posts/`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+      data: data,
     });
+    if (res) {
+      message.success(res.data.message);
+      return res.data.message;
+    }
+  } catch (err) {
+    message.error(err.response.data.message);
+  }
 };
 
 //Show Friends
@@ -329,15 +329,12 @@ export const handleRequest = async (status, friendId) => {
 
 //Show Messages
 export const showMessages = async () => {
-  // const limit = page || 0;
-  // console.log("idhr", payload);
   try {
     const messages = await axios({
       method: "GET",
       url: `${process.env.REACT_APP_API}messages/`,
       headers: { Authorization: `Bearer ${token}` },
     });
-    // console.log("Messages: ", messages.data.chats);
     return messages.data.chats;
   } catch (error) {
     message.error(error.response.data.message);
