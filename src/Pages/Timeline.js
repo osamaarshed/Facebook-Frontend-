@@ -63,13 +63,7 @@ const Timeline = () => {
               />
             </Sider>
           </animated.div>
-          <Layout
-          // className={
-          //   activekey === "messages"
-          //     ? "timeline-content-layout-messages"
-          //     : "timeline-content-layout"
-          // }
-          >
+          <Layout>
             <Header>
               <Navbar
                 setActiveKey={(e) => setActiveKey(e)}

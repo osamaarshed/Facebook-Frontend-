@@ -2,12 +2,43 @@
   margin-top: 5%;
   margin-left: 10%;
 }
+.friends-card-title {
+  display: flex;
+  flex-direction: row;
+}
+.friends-card-close {
+  position: absolute;
+  margin-left: 83%;
+  cursor: pointer;
+  color: red;
+}
+.friends-card-close:hover {
+  color: black;
+}
+.friends-search-dropdown {
+  display: flex;
+  flex-direction: column;
+  color: rgb(100, 100, 100);
+  background-color: white;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.friends-search-items {
+  width: 100%;
+  text-align: left;
+  padding: 5px;
+  cursor: pointer;
+}
+.friends-search-items:hover {
+  background-color: rgb(236, 236, 236);
+}
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 80%;
   margin-left: 10%;
   margin-right: 10%;
+  min-height: 43vh;
 }
 
 td,

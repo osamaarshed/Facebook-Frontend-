@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchFriends } from "../../../Api";
 
-export const fetchAllFriends = createAsyncThunk("", async () => {
-  const res = await fetchFriends();
-  return res;
-});
+export const fetchAllFriends = createAsyncThunk(
+  "Friends/fetchAllFriends",
+  async (page) => {
+    const res = await fetchFriends(page);
+    return res;
+  }
+);
 
 const showFriendsSlice = createSlice({
   name: "showFriends",

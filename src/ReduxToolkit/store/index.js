@@ -13,6 +13,7 @@ import { setPageSlice } from "./messagesSlices/SetPageSlice";
 import { showSpecificChatsSlice } from "./messagesSlices/showSpecifcChatsSlice";
 import { selectedIdSlice } from "./messagesSlices/selectedIdSlice";
 import { selectedPostSlice } from "./PostSlices/SelectedPostSlice";
+import { findAllUsersSlice } from "./friendsSlices/FindAllUsersSlice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     comment: commentsSlice.reducer,
     commentRender: commentsRenderSlice.reducer,
     friends: showFriendsSlice.reducer,
+    findAllUsers: findAllUsersSlice.reducer,
     friendRequests: friendRequestsSlice.reducer,
     messages: showMessageSlice.reducer,
     specificMessages: showSpecificChatsSlice.reducer,

@@ -74,6 +74,7 @@ export const likePost = async (payload) => {
   });
   return res.data?.post;
 };
+
 //Show Comments
 export const showComments = async (postId) => {
   try {
@@ -238,21 +239,17 @@ export const handleUpdate = async (data) => {
 };
 
 //Show Friends
-export const fetchFriends = async () => {
+export const fetchFriends = async (page) => {
   try {
     const friends = await axios({
       method: "GET",
-      url: `${process.env.REACT_APP_API}addfriends/`,
+      url: `${process.env.REACT_APP_API}addfriends/paginated/?page=${page}`,
       headers: { Authorization: `Bearer ${token}` },
     });
-    // console.log(friends);
-    // console.log(friends.data.message, "Friends");
-    return friends.data.message;
-    // setFriendResponse(friends.data.message);
+    return friends.data;
   } catch (error) {
     if (error.response && error.response.status === 404) {
       message.info("No Friends");
-      // console.log("Not Found");
     } else {
       message.error(error.response.data.message);
     }
@@ -267,6 +264,20 @@ export const findFriends = async (value) => {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res;
+};
+
+//Find All Users
+export const findAllUsers = async () => {
+  try {
+    const res = await axios({
+      method: "get",
+      url: `${process.env.REACT_APP_API}addfriends/allusers`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data;
+  } catch (error) {
+    message.error(error.response.data.message);
+  }
 };
 
 //Send Request

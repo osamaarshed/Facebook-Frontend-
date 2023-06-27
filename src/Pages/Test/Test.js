@@ -5,7 +5,7 @@ import { animated, useScroll, useSpring } from "@react-spring/web";
 // from useScroll Hook and on the basis of scroll position you can perform animations you want.
 
 const Test = () => {
-  const { scrollYProgress } = useScroll({
+  useScroll({
     onChange: ({ value: { scrollYProgress } }) => {
       api.start({
         to: {
@@ -16,9 +16,7 @@ const Test = () => {
                 }, ${1 - scrollYProgress}, 1)`
               : "translate3d(0px,0vh,0px) scale3d(1, 1, 1)",
           transformStyle: "preserve-3d",
-          opacity:
-            // scrollYProgress > 0 ? 1 - scrollYProgress : 1 - scrollYProgress,
-            1 - scrollYProgress,
+          opacity: 1 - scrollYProgress,
         },
         reverse: true,
       });
@@ -26,12 +24,8 @@ const Test = () => {
   });
   const [animation, api] = useSpring(() => ({
     from: {
-      transform:
-        scrollYProgress > 0
-          ? "translate3d(0px,0vh,0px) scale3d(1, 1, 1)"
-          : "translate3d(0px,0vh,0px) scale3d(1, 1, 1)",
-      // opacity: scrollYProgress > 0 ? 1 - scrollYProgress : 1 - scrollYProgress,
-      opacity: 1 - scrollYProgress,
+      transform: "translate3d(0px,0vh,0px) scale3d(1, 1, 1)",
+      opacity: 1,
     },
   }));
 

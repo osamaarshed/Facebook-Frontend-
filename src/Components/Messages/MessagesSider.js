@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Input, Form } from "antd";
 import { useSelector } from "react-redux";
 import { SendOutlined } from "@ant-design/icons";
@@ -50,17 +50,18 @@ const MessagesSider = ({ socket }) => {
         new Date(Date.now()).getMinutes(),
     };
     await socket.emit("send_message", payload);
+    console.log("Sent");
     setMessage([...message, { sentBy: senderName, text: inputData }]);
     setFirstMessageSend(true);
     form.resetFields();
   };
 
-  const recieveMessage = () => {
+  const recieveMessage = useCallback(() => {
     socket.on("recieve_message", (data) => {
       console.log("Recieved Data on Message Sider: ", data);
       setMessage(data.messages);
     });
-  };
+  }, [message]);
   useEffect(() => {
     recieveMessage();
     console.log("MessagesSider: ");

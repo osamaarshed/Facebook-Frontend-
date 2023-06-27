@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "antd";
+import { Input, Pagination } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
   UserAddOutlined,
@@ -9,13 +9,15 @@ import {
 import { Card, Button, Space, message } from "antd";
 import "../../Css/Friends.css";
 import jwt_decode from "jwt-decode";
-import { findFriends, sendRequest, deleteFriend } from "../../Api";
+import { sendRequest, deleteFriend } from "../../Api";
 import { fetchAllFriends } from "../../ReduxToolkit/store/friendsSlices/ShowFriendsSlice";
+import { allUsers } from "../../ReduxToolkit/store/friendsSlices/FindAllUsersSlice";
 const { Search } = Input;
 
 const Friends = () => {
   const token = localStorage.getItem("jwt");
   const decodedToken = jwt_decode(token);
+  const [value, setValue] = useState("");
   const [response, setResponse] = useState();
   const [sentRequest, setSentRequest] = useState(false);
   const [isFriend, setIsFriend] = useState(false);
@@ -24,6 +26,10 @@ const Friends = () => {
 
   const friends = useSelector((state) => {
     return state.friends.value;
+  });
+
+  const users = useSelector((state) => {
+    return state.findAllUsers.value;
   });
 
   useEffect(() => {
@@ -37,22 +43,26 @@ const Friends = () => {
       message.error(error.response.data.message);
     }
   };
-  const onSearch = async (value) => {
-    try {
-      const res = await findFriends(value);
-      if (res.data[0]?.friendRequests.includes(decodedToken._id)) {
-        setSentRequest(true);
-      } else if (res.data[0]?.friends.includes(decodedToken._id)) {
-        setIsFriend(true);
-      } else {
-        setSentRequest(false);
-        setIsFriend(false);
-      }
-      setResponse(res.data);
-    } catch (error) {
-      message.error(error.response.data.message);
-    }
+  const handleChange = (page) => {
+    dispatch(fetchAllFriends(page - 1));
   };
+  const handleSearchChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const onSearch = (value) => {
+    if (value?.friendRequests.includes(decodedToken._id)) {
+      setSentRequest(true);
+    } else if (value?.friends.includes(decodedToken._id)) {
+      setIsFriend(true);
+    } else {
+      setSentRequest(false);
+      setIsFriend(false);
+    }
+    setResponse(value);
+    setValue(value.name);
+  };
+
   const handleSendRequest = async (friendId) => {
     const payload = {
       friendId: friendId,
@@ -64,6 +74,7 @@ const Friends = () => {
       message.error(error.response.data.message);
     }
   };
+
   const handleDeleteFriend = async (friendId) => {
     try {
       const res = await deleteFriend(friendId);
@@ -73,56 +84,96 @@ const Friends = () => {
       message.error(error.response.data.message);
     }
   };
+
+  useEffect(() => {
+    dispatch(allUsers());
+  }, []);
   return (
     <div>
       <h1>Friends</h1>
-      <Search
-        style={{ width: "80%" }}
-        placeholder="Enter Email"
-        onSearch={onSearch}
-        enterButton
-      />
-      <div>
-        {response?.map((object, i) => {
-          return (
-            <React.Fragment key={i}>
-              <div className="friends-card">
-                <Card
-                  title={object.name}
-                  bordered={false}
-                  style={{
-                    width: 300,
-                    backgroundColor: "#d9d9d9",
-                  }}
+      <div className="Friends-search-container">
+        <Search
+          style={{ width: "80%" }}
+          placeholder="Enter Email"
+          value={value}
+          onChange={(e) => handleSearchChange(e)}
+          enterButton
+        />
+        <div className="friends-search-dropdown">
+          {users
+            ?.filter((item) => {
+              const searchedValue = value.toLowerCase();
+              const name = item.name.toLowerCase();
+              return (
+                searchedValue &&
+                name.startsWith(searchedValue) &&
+                name !== searchedValue
+              );
+            })
+            .map((obj, i) => {
+              return (
+                <div
+                  className="friends-search-items"
+                  onClick={() => onSearch(obj)}
+                  key={i}
                 >
-                  <Space>
-                    {sentRequest ? (
-                      <Button type="primary">Already Sent</Button>
-                    ) : isFriend ? (
-                      <Button type="primary">
-                        <CheckOutlined /> Already Friends
-                      </Button>
-                    ) : (
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          handleSendRequest(object._id);
-                          setSentRequest(true);
-                        }}
-                      >
-                        <UserAddOutlined />
-                        Send Request
-                      </Button>
-                    )}
-                  </Space>
-                </Card>
-              </div>
-            </React.Fragment>
-          );
-        })}
+                  {obj.name}
+                </div>
+              );
+            })}
+        </div>
+      </div>
+      <div>
+        {response ? (
+          <div className="friends-card">
+            <Card
+              title={
+                <div className="friends-card-title">
+                  <div>{response.name} </div>
+                  <div
+                    className="friends-card-close"
+                    onClick={() => {
+                      setResponse(null);
+                    }}
+                  >
+                    X
+                  </div>
+                </div>
+              }
+              bordered={false}
+              style={{
+                width: 300,
+                backgroundColor: "#d9d9d9",
+              }}
+            >
+              <Space>
+                {sentRequest ? (
+                  <Button type="primary">Already Sent</Button>
+                ) : isFriend ? (
+                  <Button type="primary">
+                    <CheckOutlined /> Already Friends
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      handleSendRequest(response._id);
+                      setSentRequest(true);
+                    }}
+                  >
+                    <UserAddOutlined />
+                    Send Request
+                  </Button>
+                )}
+              </Space>
+            </Card>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <h1>All Friends</h1>
-      <div>
+      <div className="friends-list-container">
         <table>
           <thead>
             <tr>
@@ -132,7 +183,7 @@ const Friends = () => {
               <th>Remove</th>
             </tr>
           </thead>
-          {friends?.map((object, i) => {
+          {friends?.message?.map((object, i) => {
             return (
               <tbody key={i}>
                 <tr>
@@ -154,6 +205,14 @@ const Friends = () => {
             );
           })}
         </table>
+        <div className="Friends-pagination">
+          <Pagination
+            defaultCurrent={1}
+            pageSize={5}
+            total={friends?.count}
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
       </div>
     </div>
   );
