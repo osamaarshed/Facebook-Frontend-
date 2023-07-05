@@ -73,7 +73,6 @@ const SearchFriends = ({ socket }) => {
   };
   useEffect(() => {
     recieveMessage();
-    console.log("Search Friends: ");
   }, []);
   return (
     <div>

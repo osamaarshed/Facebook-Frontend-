@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, message, List, Card, Input, Form } from "antd";
+import { Avatar, message, List, Card, Input, Form, Popconfirm } from "antd";
 import Buttons from "./Buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { renderPost } from "../ReduxToolkit/store/PostSlices/RenderPostsSlice";
@@ -17,7 +17,7 @@ import { handleCommentSubmit, handleCommentDelete, handleDelete } from "../Api";
 import { animated, useSpring } from "@react-spring/web";
 import { likePostUpdate } from "../ReduxToolkit/store/PostSlices/AllPostsSlice";
 import { likeMyPostUpdate } from "../ReduxToolkit/store/PostSlices/MyPostsSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { selectedPost } from "../ReduxToolkit/store/PostSlices/SelectedPostSlice";
 
 const { Meta } = Card;
@@ -25,6 +25,7 @@ const { TextArea } = Input;
 
 const PostCard = (props) => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [commentRender, setCommentRender] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -131,28 +132,54 @@ const PostCard = (props) => {
                   key="comment"
                   id={props.postId}
                   onClick={() => {
-                    // setIsModalOpen(true);
                     getCommentsData();
                     setShowComments(!showComments);
                   }}
                 />,
                 <ShareAltOutlined key="share" />,
-
-                <DeleteOutlined
-                  key="delete"
-                  onClick={() => {
+                <Popconfirm
+                  title="Delete?"
+                  description="Are you sure you want to Delete this post?"
+                  icon={
+                    <DeleteOutlined
+                      style={{
+                        color: "red",
+                      }}
+                    />
+                  }
+                  onConfirm={() => {
                     handleDelete(props.postId);
                     dispatch(renderPost());
                   }}
-                />,
-                <Link to="/editposts">
-                  <EditOutlined
-                    key="edit"
-                    onClick={() => {
-                      dispatch(selectedPost(props.postId));
-                    }}
-                  />
-                </Link>,
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <DeleteOutlined key="delete" />
+                </Popconfirm>,
+
+                <Popconfirm
+                  title="Edit?"
+                  description="Are you sure you want to edit this post?"
+                  icon={
+                    <EditOutlined
+                      style={{
+                        color: "blue",
+                      }}
+                    />
+                  }
+                  onConfirm={() => {
+                    const payload = {
+                      inputFile: props.inputFile,
+                      postId: props.postId,
+                    };
+                    dispatch(selectedPost(payload));
+                    navigate("/editposts");
+                  }}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <EditOutlined key="edit" />
+                </Popconfirm>,
               ]
             : [
                 <span key="span">
@@ -202,7 +229,6 @@ const PostCard = (props) => {
           style={animation}
           className="postCard-showComments-container"
         >
-          {/* <Space.Compact> */}
           <Form
             className="postCard-comment-modal-form"
             name="control-hooks"
@@ -228,7 +254,6 @@ const PostCard = (props) => {
               />
             </Form.Item>
           </Form>
-          {/* </Space.Compact> */}
 
           <List
             className="postCard-commentsListContainer"

@@ -17,6 +17,7 @@ const ChatBox = ({ decodedToken, message, msg, firstMessageSend }) => {
   const messagesEndRef = useRef(null);
   const dispatch = useDispatch();
   const handleInfiniteScroll = () => {
+    console.log("Scroll: ", document.getElementById("chatBox").scrollTop);
     if (document.getElementById("chatBox").scrollTop <= 0) {
       dispatch(updatePage());
     }
@@ -35,9 +36,6 @@ const ChatBox = ({ decodedToken, message, msg, firstMessageSend }) => {
     }, 100);
   }, [message, selectedId]);
 
-  useEffect(() => {
-    console.log("ChatBox: ");
-  }, []);
   return (
     <div
       onScroll={() => {
@@ -47,46 +45,52 @@ const ChatBox = ({ decodedToken, message, msg, firstMessageSend }) => {
       className="chats-modalChatBody"
     >
       {firstMessageSend ? (
-        message?.map((msg, i) => {
-          return (
-            <React.Fragment key={i}>
-              <div id={msg.sentBy?._id === decodedToken._id ? "me" : "other"}>
-                <p className="Chats-msg-text">{msg.text}</p>
-                <p>
-                  <span className="Chats-msg-senderName">
-                    Sent By: {msg.sentBy?.name}
-                  </span>
-                  <span className="Chats-msg-time">{msg.timeStamp}</span>
-                </p>
-              </div>
-              <div ref={messagesEndRef} />
-            </React.Fragment>
-          );
-        })
+        <div>
+          {message?.map((msg, i) => {
+            return (
+              <React.Fragment key={i}>
+                <div id={msg.sentBy?._id === decodedToken._id ? "me" : "other"}>
+                  <p className="Chats-msg-text">{msg.text}</p>
+                  <p>
+                    <span className="Chats-msg-senderName">
+                      Sent By: {msg.sentBy?.name}
+                    </span>
+                    <span className="Chats-msg-time">{msg.timeStamp}</span>
+                  </p>
+                </div>
+              </React.Fragment>
+            );
+          })}
+          {/* <div ref={messagesEndRef} /> */}
+        </div>
       ) : specificMessages.isLoading ? (
         <>
           <Spin indicator={antIcon} />
         </>
       ) : (
-        msg?.map((object, i) => {
-          return (
-            <React.Fragment key={i}>
-              <div id={object.sentBy._id === decodedToken._id ? "me" : "other"}>
-                <p className="Chats-msg-text">{object.text}</p>
-                <p>
-                  <span className="Chats-msg-senderName">
-                    Sent By: {object.sentBy.name}
-                  </span>
-                  <span className="Chats-msg-time">{object.timeStamp}</span>
-                </p>
-              </div>
-              <div ref={messagesEndRef} />
-            </React.Fragment>
-          );
-        })
+        <div>
+          {msg?.map((object, i) => {
+            return (
+              <React.Fragment key={i}>
+                <div
+                  id={object.sentBy._id === decodedToken._id ? "me" : "other"}
+                >
+                  <p className="Chats-msg-text">{object.text}</p>
+                  <p>
+                    <span className="Chats-msg-senderName">
+                      Sent By: {object.sentBy.name}
+                    </span>
+                    <span className="Chats-msg-time">{object.timeStamp}</span>
+                  </p>
+                </div>
+              </React.Fragment>
+            );
+          })}
+          {/* <div ref={messagesEndRef} /> */}
+        </div>
       )}
+      <div ref={messagesEndRef} />
     </div>
-    // </div>
   );
 };
 

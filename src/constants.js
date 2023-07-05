@@ -4,7 +4,7 @@ import Friends from "./Pages/Friends/Friends";
 import Messages from "./Pages/Messages/Messages";
 import AllPosts from "./Pages/Posts/AllPosts";
 import CreatePosts from "./Pages/Posts/CreatePosts";
-import MyPosts from "./Pages/Posts/MyPosts";
+// import MyPosts from "./Pages/Posts/MyPosts";
 import Parallax from "./Pages/Test/Parallax";
 import Test from "./Pages/Test/Test";
 import UseSprings from "./Pages/Test/UseSprings";
@@ -21,7 +21,8 @@ export const navItems = [
         key: "allposts",
       },
       {
-        label: <Link to="myposts">My Posts</Link>,
+        label: "My Posts",
+        // label: <Link to="myposts">My Posts</Link>,
         key: "myposts",
       },
     ],
@@ -146,7 +147,6 @@ export const sideNavItems = [
 
 export const contentRoutes = {
   allposts: <AllPosts />,
-  myposts: <MyPosts />,
   createposts: <CreatePosts />,
   messages: <Messages />,
   friends: <Friends />,

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Input, Pagination } from "antd";
+import { Input, Pagination, Popconfirm } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
   UserAddOutlined,
   DeleteOutlined,
   CheckOutlined,
 } from "@ant-design/icons";
-import { Card, Button, Space, message } from "antd";
+import { Card, Button, Space, message, Select } from "antd";
 import "../../Css/Friends.css";
 import jwt_decode from "jwt-decode";
 import { sendRequest, deleteFriend } from "../../Api";
@@ -18,11 +18,26 @@ const Friends = () => {
   const token = localStorage.getItem("jwt");
   const decodedToken = jwt_decode(token);
   const [value, setValue] = useState("");
+  const [selectValue, setSelectValue] = useState("name");
   const [response, setResponse] = useState();
   const [sentRequest, setSentRequest] = useState(false);
   const [isFriend, setIsFriend] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const dispatch = useDispatch();
+  const options = [
+    {
+      value: "name",
+      label: "Search By Name",
+    },
+    {
+      value: "email",
+      label: "Search By Email",
+    },
+    {
+      value: "id",
+      label: "Search By Id",
+    },
+  ];
 
   const friends = useSelector((state) => {
     return state.friends.value;
@@ -46,8 +61,13 @@ const Friends = () => {
   const handleChange = (page) => {
     dispatch(fetchAllFriends(page - 1));
   };
+
   const handleSearchChange = (event) => {
     setValue(event.target.value);
+  };
+
+  const handleSelectChange = (value) => {
+    setSelectValue(value);
   };
 
   const onSearch = (value) => {
@@ -92,22 +112,41 @@ const Friends = () => {
     <div>
       <h1>Friends</h1>
       <div className="Friends-search-container">
-        <Search
+        <Input
           style={{ width: "80%" }}
-          placeholder="Enter Email"
+          placeholder={
+            selectValue === "email"
+              ? "johndoe@gmail.com"
+              : selectValue === "id"
+              ? "Enter Id..."
+              : "Enter Name..."
+          }
+          addonAfter={
+            <Select
+              defaultValue="name"
+              onChange={handleSelectChange}
+              options={options}
+            />
+          }
           value={value}
           onChange={(e) => handleSearchChange(e)}
-          enterButton
+          allowClear
         />
         <div className="friends-search-dropdown">
           {users
             ?.filter((item) => {
-              const searchedValue = value.toLowerCase();
-              const name = item.name.toLowerCase();
+              const searchedValue =
+                selectValue === "id" ? value : value.toLowerCase();
+              const data =
+                selectValue === "email"
+                  ? item.email.toLowerCase()
+                  : selectValue === "id"
+                  ? item._id
+                  : item.name.toLowerCase();
               return (
                 searchedValue &&
-                name.startsWith(searchedValue) &&
-                name !== searchedValue
+                data.startsWith(searchedValue) &&
+                data !== searchedValue
               );
             })
             .map((obj, i) => {
@@ -117,7 +156,11 @@ const Friends = () => {
                   onClick={() => onSearch(obj)}
                   key={i}
                 >
-                  {obj.name}
+                  {selectValue === "email"
+                    ? obj.email
+                    : selectValue === "id"
+                    ? obj._id
+                    : obj.name}
                 </div>
               );
             })}
@@ -136,7 +179,7 @@ const Friends = () => {
                       setResponse(null);
                     }}
                   >
-                    X
+                    x
                   </div>
                 </div>
               }
@@ -176,8 +219,8 @@ const Friends = () => {
       <div className="friends-list-container">
         <table>
           <thead>
-            <tr>
-              <th>Name</th>
+            <tr className="friends-tr">
+              <th className="friends-th-name">Name</th>
               <th>Email</th>
               <th>Id</th>
               <th>Remove</th>
@@ -191,28 +234,34 @@ const Friends = () => {
                   <th>{object.email}</th>
                   <th>{object._id}</th>
                   <th>
-                    <Button
-                      danger
-                      onClick={() => {
+                    <Popconfirm
+                      title="Remove?"
+                      description="Are you sure you want to remove this friend?"
+                      icon={<DeleteOutlined style={{ color: "red" }} />}
+                      onConfirm={() => {
                         handleDeleteFriend(object._id);
                       }}
+                      okText="Yes"
+                      cancelText="No"
                     >
-                      <DeleteOutlined />
-                    </Button>
+                      <Button danger>
+                        <DeleteOutlined />
+                      </Button>
+                    </Popconfirm>
                   </th>
                 </tr>
               </tbody>
             );
           })}
         </table>
-        <div className="Friends-pagination">
-          <Pagination
-            defaultCurrent={1}
-            pageSize={5}
-            total={friends?.count}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
+      </div>
+      <div className="Friends-pagination">
+        <Pagination
+          defaultCurrent={1}
+          pageSize={5}
+          total={friends?.count}
+          onChange={(e) => handleChange(e)}
+        />
       </div>
     </div>
   );

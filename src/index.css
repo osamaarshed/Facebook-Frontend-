@@ -287,6 +287,10 @@ code {
   height: 100vh;
   overflow-y: hidden;
 }
+.timeline-container {
+  height: 100vh;
+  overflow: hidden;
+}
 .messages-container {
   background-color: #f0f0f0;
 }
@@ -323,8 +327,20 @@ code {
 }
 .editPosts-form {
   border: 1px solid;
-  padding: 5%;
+  padding: 2%;
+}
+
+.EditPosts-img {
+  height: 100px;
+  object-fit: cover;
+  margin-bottom: 3%;
 }
 .signinAnimation-animation {
   height: auto;
+}
+.friends-list-container {
+  height: 300px;
+}
+.friends-th-name {
+  width: 15%;
 }

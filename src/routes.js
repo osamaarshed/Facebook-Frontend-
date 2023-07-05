@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import SignIn from "./Pages/SignIn/SignIn";
 import SignUp from "./Pages/SignUp/SignUp";
-import MyPosts from "./Pages/Posts/MyPosts";
+// import MyPosts from "./Pages/Posts/MyPosts";
 import CreatePosts from "./Pages/Posts/CreatePosts";
 import Friends from "./Pages/Friends/Friends";
 import FriendRequests from "./Pages/Friends/FriendRequests";
@@ -26,10 +26,10 @@ const router = createBrowserRouter([
         path: "allposts",
         element: <AllPosts />,
       },
-      {
-        path: "myposts",
-        element: <MyPosts />,
-      },
+      // {
+      //   path: "myposts",
+      //   element: <MyPosts />,
+      // },
       {
         path: "editposts",
         element: <EditPosts />,

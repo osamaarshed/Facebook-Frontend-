@@ -17,9 +17,7 @@ const AllChats = ({ socket, messages }) => {
     socket.emit("join_room", payload);
   };
 
-  useEffect(() => {
-    console.log("All Chats: ");
-  }, []);
+  
   return (
     <div>
       {messages.isLoading ? (

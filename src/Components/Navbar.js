@@ -61,7 +61,7 @@ const Navbar = ({ setActiveKey, setCollapsed, collapsed }) => {
           </Button>
         )}
 
-        <Link to="/">
+        <Link to="/allposts">
           <h1
             className={
               collapsed ? "Navbar-header-h1-collapsed" : "Navbar-header-h1"

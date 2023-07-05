@@ -8,24 +8,26 @@ import { useNavigate } from "react-router-dom";
 
 const EditPosts = () => {
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+
   const postId = useSelector((state) => {
     return state.selectedPost.value;
   });
-  const [form] = Form.useForm();
+
   const handleUpdateValues = async (value) => {
     const data = new FormData();
     if (value.inputFile) {
       data.append("inputFile", value.inputFile[0].originFileObj);
       data.append("postDescription", value.postDescription);
-      data.append("postId", postId);
+      data.append("postId", postId.postId);
     } else {
       data.append("postDescription", value.postDescription);
-      data.append("postId", postId);
+      data.append("postId", postId.postId);
     }
     const res = await handleUpdate(data);
     if (res === "Updated Successfully") {
       form.resetFields();
-      navigate("/myposts");
+      navigate("/allposts");
     }
   };
 
@@ -44,6 +46,13 @@ const EditPosts = () => {
         form={form}
         className="editPosts-form"
       >
+        {/* <div className="editPosts-image-container"> */}
+        <img
+          alt="example"
+          src={`${process.env.REACT_APP_API}public/images/${postId.inputFile}`}
+          className="EditPosts-img"
+        />
+        {/* </div> */}
         <Form.Item
           label="Post Description"
           name="postDescription"

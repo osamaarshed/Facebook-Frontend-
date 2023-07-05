@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMessages } from "../../ReduxToolkit/store/messagesSlices/showMessageSlice";
 import { animated, useSpring } from "@react-spring/web";
 import { fetchSpecificMessages } from "../../ReduxToolkit/store/messagesSlices/showSpecifcChatsSlice";
+import { updatePage } from "../../ReduxToolkit/store/messagesSlices/SetPageSlice";
 
 const socket = io.connect(`${process.env.REACT_APP_API}`);
 const { Sider, Content } = Layout;
@@ -36,7 +37,6 @@ const Messages = () => {
 
   useEffect(() => {
     dispatch(fetchAllMessages());
-    console.log("Messages: ");
   }, []);
 
   useEffect(() => {
