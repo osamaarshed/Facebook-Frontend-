@@ -4,7 +4,6 @@ import Friends from "./Pages/Friends/Friends";
 import Messages from "./Pages/Messages/Messages";
 import AllPosts from "./Pages/Posts/AllPosts";
 import CreatePosts from "./Pages/Posts/CreatePosts";
-// import MyPosts from "./Pages/Posts/MyPosts";
 import Parallax from "./Pages/Test/Parallax";
 import Test from "./Pages/Test/Test";
 import UseSprings from "./Pages/Test/UseSprings";
@@ -22,7 +21,6 @@ export const navItems = [
       },
       {
         label: "My Posts",
-        // label: <Link to="myposts">My Posts</Link>,
         key: "myposts",
       },
     ],
@@ -43,30 +41,45 @@ export const navItems = [
     label: <Link to="friendRequests">Friend Requests</Link>,
     key: "friendRequests",
   },
-
   {
     label: "Animations",
     key: "animations",
     children: [
       {
-        label: <Link to="test">useScroll Hook</Link>,
-        key: "test",
+        label: "React Spring",
+        key: "spring",
+        children: [
+          {
+            label: <Link to="test">useScroll Hook</Link>,
+            key: "test",
+          },
+          {
+            label: <Link to="usetransition">useTransition Hook</Link>,
+            key: "usetransition",
+          },
+          {
+            label: <Link to="usesprings">useSprings Hook</Link>,
+            key: "usesprings",
+          },
+          {
+            label: <Link to="usetrail">useTrail Hook</Link>,
+            key: "usetrail",
+          },
+          {
+            label: <Link to="parallax">Parallax</Link>,
+            key: "parallax",
+          },
+        ],
       },
       {
-        label: <Link to="usetransition">useTransition Hook</Link>,
-        key: "usetransition",
-      },
-      {
-        label: <Link to="usesprings">useSprings Hook</Link>,
-        key: "usesprings",
-      },
-      {
-        label: <Link to="usetrail">useTrail Hook</Link>,
-        key: "usetrail",
-      },
-      {
-        label: <Link to="parallax">Parallax</Link>,
-        key: "parallax",
+        label: "Tailwind",
+        key: "tailwindCss",
+        children: [
+          {
+            label: <Link to="tailwind">Tailwind Css</Link>,
+            key: "tailwind",
+          },
+        ],
       },
     ],
   },
@@ -89,7 +102,7 @@ export const sideNavItems = [
         key: "allposts",
       },
       {
-        label: <Link to="myposts">My Posts</Link>,
+        label: "My Posts",
         key: "myposts",
       },
     ],
@@ -115,24 +128,40 @@ export const sideNavItems = [
     key: "animations",
     children: [
       {
-        label: <Link to="test">useScroll Hook</Link>,
-        key: "test",
+        label: "React Spring",
+        key: "spring",
+        children: [
+          {
+            label: <Link to="test">useScroll Hook</Link>,
+            key: "test",
+          },
+          {
+            label: <Link to="usetransition">useTransition Hook</Link>,
+            key: "usetransition",
+          },
+          {
+            label: <Link to="usesprings">useSprings Hook</Link>,
+            key: "usesprings",
+          },
+          {
+            label: <Link to="usetrail">useTrail Hook</Link>,
+            key: "usetrail",
+          },
+          {
+            label: <Link to="parallax">Parallax</Link>,
+            key: "parallax",
+          },
+        ],
       },
       {
-        label: <Link to="usetransition">useTransition Hook</Link>,
-        key: "usetransition",
-      },
-      {
-        label: <Link to="usesprings">useSprings Hook</Link>,
-        key: "usesprings",
-      },
-      {
-        label: <Link to="usetrail">useTrail Hook</Link>,
-        key: "usetrail",
-      },
-      {
-        label: <Link to="parallax">Parallax</Link>,
-        key: "parallax",
+        label: "Tailwind",
+        key: "tailwindCss",
+        children: [
+          {
+            label: <Link to="tailwind">Tailwind Css</Link>,
+            key: "tailwind",
+          },
+        ],
       },
     ],
   },

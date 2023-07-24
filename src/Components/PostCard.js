@@ -100,7 +100,8 @@ const PostCard = (props) => {
         cover={
           <img
             alt="example"
-            src={`${process.env.REACT_APP_API}public/images/${props.inputFile}`}
+            src={`${process.env.REACT_APP_POST_API}public/images/${props.inputFile}`}
+            // src={`${process.env.REACT_APP_API}public/images/${props.inputFile}`}
             className="postCard-img"
           />
         }

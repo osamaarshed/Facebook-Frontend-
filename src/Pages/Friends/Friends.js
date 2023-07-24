@@ -110,7 +110,7 @@ const Friends = () => {
   }, []);
   return (
     <div>
-      <h1>Friends</h1>
+      <h1 className="text-lg font-bold mb-8">Friends</h1>
       <div className="Friends-search-container">
         <Input
           style={{ width: "80%" }}
@@ -215,7 +215,7 @@ const Friends = () => {
           ""
         )}
       </div>
-      <h1>All Friends</h1>
+      <h1 className="text-lg font-bold my-8">All Friends</h1>
       <div className="friends-list-container">
         <table>
           <thead>

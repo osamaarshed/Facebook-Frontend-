@@ -21,10 +21,12 @@ const FriendRequests = () => {
   });
   return (
     <div>
-      <h1>FriendRequests</h1>
+      <h1 className="text-lg font-bold">FriendRequests</h1>
       {!friendRequests?.length ? (
         <>
-          <p className="friendRequest-paragraph">No Friend Requests to show</p>
+          <p className="text-gray-400 text-lg mt-28 mb-28">
+            No Friend Requests to show
+          </p>
         </>
       ) : (
         <div className="friendRequest-div">

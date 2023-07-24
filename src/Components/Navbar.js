@@ -15,12 +15,12 @@ const navStyle = {
 
 const Navbar = ({ setActiveKey, setCollapsed, collapsed }) => {
   const navigate = useNavigate();
+  const jwt = localStorage.getItem("jwt");
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
 
-  const jwt = localStorage.getItem("jwt");
   useEffect(() => {
     if (!jwt) {
       navigate("/signin");
@@ -71,6 +71,7 @@ const Navbar = ({ setActiveKey, setCollapsed, collapsed }) => {
           </h1>
         </Link>
         <div className="demo-logo" />
+
         <Menu
           className="Menu-Items"
           theme="dark"

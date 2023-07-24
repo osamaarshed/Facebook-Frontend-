@@ -8,9 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMessages } from "../../ReduxToolkit/store/messagesSlices/showMessageSlice";
 import { animated, useSpring } from "@react-spring/web";
 import { fetchSpecificMessages } from "../../ReduxToolkit/store/messagesSlices/showSpecifcChatsSlice";
-import { updatePage } from "../../ReduxToolkit/store/messagesSlices/SetPageSlice";
 
-const socket = io.connect(`${process.env.REACT_APP_API}`);
+const socket = io.connect("http://localhost:8083/");
+// const socket = io.connect(`${process.env.SOCKET_IO}`);
 const { Sider, Content } = Layout;
 
 const Messages = () => {
@@ -19,15 +19,15 @@ const Messages = () => {
   const messages = useSelector((state) => {
     return state.messages;
   });
+
   const selectedId = useSelector((state) => {
     return state.selectedId.value;
   });
+
   const page = useSelector((state) => {
     return state.setpages.value;
   });
-  // const page = useSelector((state) => {
-  //   return state.setpages.value;
-  // });
+
   const animation = useSpring({
     x: selectedId ? 0 : 100,
     config: {
@@ -51,7 +51,7 @@ const Messages = () => {
 
   return (
     <div className="messages-container">
-      <h1>Messages</h1>
+      <h1 className="text-lg font-bold mb-8">Messages</h1>
       <SearchFriends socket={socket} />
       <Layout hasSider className="messages-layout">
         <Content className="messages-content">
@@ -61,7 +61,7 @@ const Messages = () => {
 
         {selectedId ? (
           <animated.div style={animation}>
-            <Sider theme="light" width={600} className="messages-sider">
+            <Sider theme="light" width={600}>
               <MessagesSider socket={socket} />
             </Sider>
           </animated.div>

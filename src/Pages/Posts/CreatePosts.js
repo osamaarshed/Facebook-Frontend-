@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { Button, Form, Input, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import React from "react";
+import { Form, Input, Upload } from "antd";
 import "./../../Css/CreatePosts.css";
-import Buttons from "../../Components/Buttons";
+import { Button } from "flowbite-react";
+import { BsUpload } from "react-icons/bs";
 import { postCreate } from "../../Api";
 
 const layout = {
@@ -24,10 +24,12 @@ const CreatePosts = () => {
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
+    console.log("Values: ", values);
     console.log("inputFile:", values.inputFile[0].originFileObj);
     const data = new FormData();
     data.append("inputFile", values.inputFile[0].originFileObj);
     data.append("postDescription", values.postDescription);
+
     const res = await postCreate(data);
     if (res === "Created Successfully") {
       form.resetFields();
@@ -48,8 +50,8 @@ const CreatePosts = () => {
           backgroundColor: "#f0f0f0",
         }}
       >
-        <h1>Create Posts</h1>
-        <div className="CreatePosts-form">
+        <h1 className="text-lg font-bold">Create Posts</h1>
+        <div className="flex justify-center mt-12 px-12 py-12">
           <Form
             {...layout}
             form={form}
@@ -65,8 +67,15 @@ const CreatePosts = () => {
               valuePropName="fileList"
               getValueFromEvent={normFile}
             >
-              <Upload name="inputFile" action="/upload" listType="picture">
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              <Upload
+                name="inputFile"
+                action="/upload"
+                listType="picture"
+                maxCount={1}
+              >
+                <Button pill>
+                  <BsUpload />
+                </Button>
               </Upload>
             </Form.Item>
             <Form.Item
@@ -82,7 +91,10 @@ const CreatePosts = () => {
             </Form.Item>
 
             <Form.Item {...tailLayout}>
-              <Buttons type="primary" htmlType="submit" title="Submit" />
+              <Button pill type="submit">
+                Submit
+              </Button>
+              {/* <Buttons type="primary" htmlType="submit" title="Submit" /> */}
             </Form.Item>
           </Form>
         </div>

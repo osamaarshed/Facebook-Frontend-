@@ -44,7 +44,7 @@ export const postCreate = async (data) => {
   try {
     const res = await axios({
       method: "post",
-      url: `${process.env.REACT_APP_API}posts/`,
+      url: `http://localhost:8081/`,
       data: data,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -80,10 +80,9 @@ export const showComments = async (postId) => {
   try {
     const res = await axios({
       method: "get",
-      url: `${process.env.REACT_APP_API}comments/${postId}`,
+      url: `${process.env.REACT_APP_API}posts/comments/${postId}`,
       headers: { Authorization: `Bearer ${token}` },
     });
-    // console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -99,7 +98,7 @@ export const handleCommentSubmit = async (postId, values) => {
     };
     const res = await axios({
       method: "post",
-      url: `${process.env.REACT_APP_API}comments/`,
+      url: `${process.env.REACT_APP_API}posts/comments/`,
       headers: { Authorization: `Bearer ${token}` },
       data: payload,
     });
@@ -116,7 +115,7 @@ export const handleCommentDelete = async (postId) => {
   try {
     const res = await axios({
       method: "delete",
-      url: `${process.env.REACT_APP_API}comments/${postId._id}`,
+      url: `${process.env.REACT_APP_API}posts/comments/${postId._id}`,
       headers: { Authorization: `Bearer ${token}` },
     });
     message.success(res.data.message);
@@ -203,6 +202,7 @@ export const handleCommentDelete = async (postId) => {
 // };
 
 //Delete Post
+
 export const handleDelete = async (postId) => {
   try {
     const res = await axios({

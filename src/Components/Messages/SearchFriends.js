@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Input, message, Card, Button, Modal } from "antd";
 import { SendOutlined } from "@ant-design/icons";
+import { TextInput } from "flowbite-react";
+import { AiOutlineSearch } from "react-icons/ai";
 import { findFriends } from "../../Api";
 import jwt_decode from "jwt-decode";
 const { Search } = Input;

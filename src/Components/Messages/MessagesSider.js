@@ -20,6 +20,7 @@ const MessagesSider = ({ socket }) => {
   const [specificMessages] = useSelector((state) => {
     return state.specificMessages.value;
   });
+
   if (specificMessages) {
     specificMessages.participants.forEach((user) => {
       if (user._id !== decodedToken._id) {
@@ -30,6 +31,7 @@ const MessagesSider = ({ socket }) => {
       }
     });
   }
+
   const room = specificMessages?.chatRoomId;
   const msg = specificMessages?.messages;
 
@@ -62,50 +64,49 @@ const MessagesSider = ({ socket }) => {
       setMessage(data.messages);
     });
   }, [message]);
+
   useEffect(() => {
     recieveMessage();
   }, []);
 
   return (
     <>
-      <div className="messagesSider-container">
-        <ChatBox
-          socket={socket}
-          decodedToken={decodedToken}
-          message={message}
-          msg={msg}
-          firstMessageSend={firstMessageSend}
-        />
-        <div className="chats-modalChatFooter">
-          <Form className="chats-message-form" form={form} onFinish={onFinish}>
-            <Form.Item
-              name="message"
-              rules={[
-                {
-                  message: "Message...",
-                  required: true,
-                },
-              ]}
+      <ChatBox
+        socket={socket}
+        decodedToken={decodedToken}
+        message={message}
+        msg={msg}
+        firstMessageSend={firstMessageSend}
+      />
+      <div className="chats-modalChatFooter">
+        <Form className="chats-message-form" form={form} onFinish={onFinish}>
+          <Form.Item
+            name="message"
+            rules={[
+              {
+                message: "Message...",
+                required: true,
+              },
+            ]}
+          >
+            <Input
+              placeholder="Message..."
+              onChange={(e) => {
+                setInputData(e.target.value);
+              }}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              className="chats-form-button"
+              type="primary"
+              shape="circle"
+              htmlType="submit"
             >
-              <Input
-                placeholder="Message..."
-                onChange={(e) => {
-                  setInputData(e.target.value);
-                }}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                className="chats-form-button"
-                type="primary"
-                shape="circle"
-                htmlType="submit"
-              >
-                <SendOutlined />
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
+              <SendOutlined />
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     </>
   );

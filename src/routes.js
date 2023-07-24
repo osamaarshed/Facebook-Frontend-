@@ -2,7 +2,6 @@ import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import SignIn from "./Pages/SignIn/SignIn";
 import SignUp from "./Pages/SignUp/SignUp";
-// import MyPosts from "./Pages/Posts/MyPosts";
 import CreatePosts from "./Pages/Posts/CreatePosts";
 import Friends from "./Pages/Friends/Friends";
 import FriendRequests from "./Pages/Friends/FriendRequests";
@@ -16,6 +15,7 @@ import UseTrail from "./Pages/Test/UseTrail";
 import Parallax from "./Pages/Test/Parallax";
 import EditPosts from "./Pages/Posts/EditPosts";
 import SigninAnimation from "./Pages/Test/SigninAnimation";
+import Tailwind from "./Pages/Test/Tailwind";
 
 const router = createBrowserRouter([
   {
@@ -26,10 +26,6 @@ const router = createBrowserRouter([
         path: "allposts",
         element: <AllPosts />,
       },
-      // {
-      //   path: "myposts",
-      //   element: <MyPosts />,
-      // },
       {
         path: "editposts",
         element: <EditPosts />,
@@ -73,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: "parallax",
         element: <Parallax />,
+      },
+      {
+        path: "tailwind",
+        element: <Tailwind />,
       },
     ],
   },

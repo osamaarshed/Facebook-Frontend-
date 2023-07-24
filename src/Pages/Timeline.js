@@ -35,7 +35,6 @@ const Timeline = () => {
     <>
       <Space
         direction="vertical"
-        className={activekey === "messages" ? "timeline-container" : ""}
         style={{
           width: "100%",
         }}
@@ -75,16 +74,12 @@ const Timeline = () => {
             </Header>
 
             <Content className="Content-container">
-              {/* {contentRoutes[activekey]} */}
               <Outlet context={activekey} />
             </Content>
-            {activekey === "messages" ? (
-              ""
-            ) : (
-              <Footer className="Footer-container">
-                <FooterSection />
-              </Footer>
-            )}
+
+            <Footer className="Footer-container">
+              <FooterSection />
+            </Footer>
           </Layout>
         </Layout>
       </Space>
